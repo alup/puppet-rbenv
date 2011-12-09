@@ -11,7 +11,7 @@ This project provides manifests for the installation of
 
 2. Apply the catalog of chosen modules(serverless install):
 
-        puppet apply manifests/base.pp
+        puppet apply ...
 
 
 TODO: Provide more information ... 
