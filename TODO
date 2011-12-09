@@ -4,3 +4,4 @@
 * Decouple ruby-build etc.
 * Make global ruby installation optional
 * Testing, testing, testing ...
+* Remove deprecated stuff
