@@ -1,3 +1,4 @@
+* Provide option for system level setup
 * Remove hardcoded paths etc.
 * Provide instruction on how to use it
 * Provide Vagrant integration instruction.
