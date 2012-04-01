@@ -5,7 +5,7 @@
 # Parameters:
 # - *user*: the user who is going to install rbenv. defaults to $USER
 # - *global_ruby*: the global ruby version which is going to be compiled and
-#   installed. It is optional as it is used by the 
+#   installed. It is optional.
 #
 # Actions:
 #

@@ -17,7 +17,7 @@ class rbenv::install {
     user    => $user,
     group   => $user,
     cwd     => "/home/${user}",
-    onlyif  => "[ -f /home/${user}/.bashrc ]", 
+    onlyif  => "[ -f /home/${user}/.bashrc ]",
     unless  => "grep .rbenv /home/${user}/.bashrc 2>/dev/null",
     path    => ["/bin", "/usr/bin", "/usr/sbin"],
   }
@@ -28,7 +28,7 @@ class rbenv::install {
     user    => $user,
     group   => $user,
     cwd     => "/home/${user}",
-    onlyif  => "[ -f /home/${user}/.bashrc ]", 
+    onlyif  => "[ -f /home/${user}/.bashrc ]",
     unless  => "grep '.rbenv init -' /home/${user}/.bashrc 2>/dev/null",
     path    => ["/bin", "/usr/bin", "/usr/sbin"],
   }
@@ -51,7 +51,7 @@ class rbenv::install {
     user    => "root",
     group   => "root",
     cwd     => "/home/${user}/ruby-build",
-    onlyif  => '[ -z "$(which ruby-build)" ]', 
+    onlyif  => '[ -z "$(which ruby-build)" ]',
     path    => ["/bin", "/usr/local/bin", "/usr/bin", "/usr/sbin"],
     require => Exec['checkout ruby-build'],
   }
