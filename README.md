@@ -18,15 +18,29 @@ This project provides manifests for the installation of
 
         puppet apply ...
 
+You can also download and install the module from puppet-forge via 
+```puppet-module``` by running:
+
+```shell
+puppet-module install alup/rbenv
+```
+
 
 ## Dry-run
 
-If you want to just simulate the installation of the module, just 
-clone the repository and use the following command:
+If you want to just simulate (or smoke test) the installation of the
+module, just clone the repository and use the following command:
 
 ```shell
 sudo puppet apply --noop --modulepath=$PWD/../ tests/init.pp
 ```
+
+
+## Testing
+
+To run the tests, use ```bundle exec rake```. Before running the tests,
+you should have run ```bundle install``` to ensure all the dependencies
+have been met.
 
 
 ## Todo
