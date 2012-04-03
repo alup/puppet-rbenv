@@ -3,3 +3,4 @@
 .rbenv-version
 pkg/*
 tmp/*
+bin/*
