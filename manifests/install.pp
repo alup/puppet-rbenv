@@ -29,7 +29,7 @@ class rbenv::install {
     group   => $user,
     cwd     => "/home/${user}",
     onlyif  => "[ -f /home/${user}/.bashrc ]",
-    unless  => "grep '.rbenv init -' /home/${user}/.bashrc 2>/dev/null",
+    unless  => "grep 'rbenv init -' /home/${user}/.bashrc 2>/dev/null",
     path    => ["/bin", "/usr/bin", "/usr/sbin"],
   }
 
