@@ -23,8 +23,7 @@
 # [Remember: No empty lines between comments and class definition]
 class rbenv {
 
-  # Include dependencies
-  include git, curl
-
+  include rbenv::dependencies
   include rbenv::install
+
 }

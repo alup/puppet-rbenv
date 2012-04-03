@@ -14,7 +14,7 @@ define rbenv::compile($global_ruby="1.9.2-p290") {
     environment => [ "HOME=/home/${user}" ],
     onlyif      => ['[ -n "$(which rbenv-install)" ]', "[ ! -e /home/${user}/.rbenv/versions/${global_ruby} ]"],
     path        => ["home/${user}/.rbenv/shims", "/home/${user}/.rbenv/bin", "/bin", "/usr/local/bin", "/usr/bin", "/usr/sbin"],
-    require     => [Class['curl'], Exec['install ruby-build']],
+    require     => [Package['curl'], Exec['install ruby-build']],
   }
 
   exec { "rehash-rbenv":

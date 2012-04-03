@@ -8,7 +8,7 @@ class rbenv::install {
     creates => "/home/${user}/.rbenv",
     path    => ["/usr/bin", "/usr/sbin"],
     timeout => 100,
-    require => Class['git'],
+    require => Package['git-core'],
   }
 
   # STEP 2
@@ -42,7 +42,7 @@ class rbenv::install {
     creates => "/home/${user}/ruby-build",
     path    => ["/usr/bin", "/usr/sbin"],
     timeout => 100,
-    require => Class['git'],
+    require => Package['git-core'],
   }
 
   # STEP 5
