@@ -25,6 +25,27 @@ You can also download and install the module from puppet-forge via
 puppet-module install alup/rbenv
 ```
 
+## Usage
+
+You can use the module in your manifest with the following code:
+
+```puppet
+class { "rbenv":
+  user    => "alup",
+  compile => true,
+  version => 1.9.3-p125,
+}
+```
+
+This will apply an rbenv installation under "alup" user home dir
+and will also compile ruby version 1.9.3-p125 to be ready for usage
+(It will also set it as the global rbenv version for this user).
+
+If you want only an rbenv installation without compiling any ruby
+version, then just set ```compile``` parameter to ```false``` (It
+defaults to ```true```).
+
+All the variables except for the ```user```, are optional.
 
 ## Dry-run
 
