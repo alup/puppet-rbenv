@@ -4,26 +4,36 @@
 #
 # Parameters:
 # - *user*: the user who is going to install rbenv. defaults to $USER
-# - *global_ruby*: the global ruby version which is going to be compiled and
+# - *compile*: whether or not a ruby version will be compiled
+# - *version*: the global ruby version which is going to be compiled and
 #   installed. It is optional.
 #
 # Actions:
 #
 # Requires:
 # - git and curl
+# - Some packages for compiling native extensions
 #
 # Sample Usage:
 #
-#     $user = "alup"
-#     include rbenv
-#     rbenv::compile {
-#       global_ruby => "1.9.2-p290"
+#     class { "rbenv":
+#         user    => "alup",
+#         compile => true,
+#         version => "1.9.3-p0",
 #     }
 #
 # [Remember: No empty lines between comments and class definition]
-class rbenv {
+class rbenv ( $user, $compile=true, $version="1.9.3-p125" ) {
 
   include rbenv::dependencies
-  include rbenv::install
+
+  rbenv::install { "rbenv::install::${user}": user => $user }
+
+  if $compile {
+    rbenv::compile { "rbenv::compile::${user}::${version}":
+      user         => $user,
+      ruby_version => $version,
+    }
+  }
 
 }

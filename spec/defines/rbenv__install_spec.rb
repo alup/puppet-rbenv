@@ -1,6 +1,8 @@
 require 'spec_helper'
 
-describe 'rbenv::install', :type => :class do
+describe 'rbenv::install', :type => :define do
+  let(:title) { 'rbenv::install::tester' }
+  let(:params) { { :user => 'tester' } }
 
   context 'install rbenv' do
     it "clones rbenv from the official repository" do

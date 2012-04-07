@@ -1,4 +1,4 @@
-class rbenv::install {
+define rbenv::install ( $user ) {
   # STEP 1
   exec { "checkout rbenv":
     command => "git clone git://github.com/sstephenson/rbenv.git .rbenv",
