@@ -6,15 +6,15 @@ define rbenv::compile( $user, $ruby_version ) {
   # Set Timeout to disabled cause we need a lot of time to compile.
   # Use HOME variable and define PATH correctly.
   exec { "install ruby ${ruby_version}":
-    command     => "rbenv-install ${ruby_version}",
+    command     => "rbenv install ${ruby_version}",
     timeout     => 0,
     user        => $user,
     group       => $user,
     cwd         => "/home/${user}",
     environment => [ "HOME=/home/${user}" ],
-    onlyif      => ['[ -n "$(which rbenv-install)" ]', "[ ! -e /home/${user}/.rbenv/versions/${ruby_version} ]"],
+    onlyif      => ['[ -n "$(which rbenv)" ]', "[ ! -e /home/${user}/.rbenv/versions/${ruby_version} ]"],
     path        => ["home/${user}/.rbenv/shims", "/home/${user}/.rbenv/bin", "/bin", "/usr/local/bin", "/usr/bin", "/usr/sbin"],
-    require     => [Package['curl'], Exec['install ruby-build']],
+    require     => [Class['rbenv::dependencies'], Exec['checkout ruby-build plugin']],
   }
 
   exec { "rehash-rbenv":
