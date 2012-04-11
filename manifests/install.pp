@@ -1,11 +1,26 @@
 define rbenv::install ( $user ) {
+
+  # Assign different values for shared install
+  case $user {
+    'root':  {
+      $home_dir =  "/root"
+      $root_dir = "/usr/local"
+      $install_dir = "rbenv"
+    }
+    default: {
+      $home_dir = "/home/${user}"
+      $root_dir = "/home/${user}"
+      $install_dir = ".rbenv"
+    }
+  }
+
   # STEP 1
   exec { "checkout rbenv":
-    command => "git clone git://github.com/sstephenson/rbenv.git .rbenv",
+    command => "git clone git://github.com/sstephenson/rbenv.git ${install_dir}",
     user    => $user,
     group   => $user,
-    cwd     => "/home/${user}",
-    creates => "/home/${user}/.rbenv",
+    cwd     => $root_dir,
+    creates => "${root_dir}/${install_dir}",
     path    => ["/usr/bin", "/usr/sbin"],
     timeout => 100,
     require => Package['git-core'],
@@ -13,12 +28,12 @@ define rbenv::install ( $user ) {
 
   # STEP 2
   exec { "configure rbenv path":
-    command => 'echo "export PATH=\$HOME/.rbenv/bin:\$PATH" >> .bashrc',
+    command => "echo \"export PATH=${root_dir}/${install_dir}/bin:\$PATH\" >> .bashrc",
     user    => $user,
     group   => $user,
-    cwd     => "/home/${user}",
-    onlyif  => "[ -f /home/${user}/.bashrc ]",
-    unless  => "grep .rbenv /home/${user}/.bashrc 2>/dev/null",
+    cwd     => $home_dir,
+    onlyif  => "[ -f ${home_dir}/.bashrc ]",
+    unless  => "grep ${install_dir}/bin ${home_dir}/.bashrc 2>/dev/null",
     path    => ["/bin", "/usr/bin", "/usr/sbin"],
   }
 
@@ -27,32 +42,42 @@ define rbenv::install ( $user ) {
     command => 'echo "eval \"\$(rbenv init -)\"" >> .bashrc',
     user    => $user,
     group   => $user,
-    cwd     => "/home/${user}",
-    onlyif  => "[ -f /home/${user}/.bashrc ]",
-    unless  => "grep 'rbenv init -' /home/${user}/.bashrc 2>/dev/null",
+    cwd     => $home_dir,
+    onlyif  => "[ -f ${home_dir}/.bashrc ]",
+    unless  => "grep 'rbenv init -' ${home_dir}/.bashrc 2>/dev/null",
     path    => ["/bin", "/usr/bin", "/usr/sbin"],
   }
 
+  file { "mkdir plugins":
+    ensure  => directory,
+    path    => "${root_dir}/${install_dir}/plugins",
+    owner   => $user,
+    group   => $user,
+    require => Exec['checkout rbenv'],
+  }
+
   # STEP 4
-  exec { "checkout ruby-build":
+  # Install ruby-build under rbenv plugins directory
+  exec { "checkout ruby-build plugin":
     command => "git clone git://github.com/sstephenson/ruby-build.git",
     user    => $user,
     group   => $user,
-    cwd     => "/home/${user}",
-    creates => "/home/${user}/ruby-build",
+    cwd     => "${root_dir}/${install_dir}/plugins",
+    creates => "${root_dir}/${install_dir}/plugins/ruby-build",
     path    => ["/usr/bin", "/usr/sbin"],
     timeout => 100,
-    require => Package['git-core'],
+    require => File['mkdir plugins'],
   }
 
+  # TODO: Support old way of non-plugin installation for ruby-build
   # STEP 5
-  exec { "install ruby-build":
-    command => "sh install.sh",
-    user    => "root",
-    group   => "root",
-    cwd     => "/home/${user}/ruby-build",
-    onlyif  => '[ -z "$(which ruby-build)" ]',
-    path    => ["/bin", "/usr/local/bin", "/usr/bin", "/usr/sbin"],
-    require => Exec['checkout ruby-build'],
-  }
+  #  exec { "install ruby-build":
+  #    command => "sh install.sh",
+  #  user    => "root",
+  #  group   => "root",
+  #  cwd     => "${root_dir}/ruby-build",
+  #  onlyif  => '[ -z "$(which ruby-build)" ]',
+  #  path    => ["/bin", "/usr/local/bin", "/usr/bin", "/usr/sbin"],
+  #  require => Exec['checkout ruby-build'],
+  #}
 }
