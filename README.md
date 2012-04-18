@@ -29,7 +29,7 @@ puppet-module install alup/rbenv
 
 You can use the module in your manifest with the following code:
 
-```puppet
+```
 class { "rbenv":
   user    => "alup",
   compile => true,
