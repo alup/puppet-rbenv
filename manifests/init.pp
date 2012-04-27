@@ -23,7 +23,7 @@
 #     }
 #
 # [Remember: No empty lines between comments and class definition]
-class rbenv ( $user, $compile=true, $version="1.9.3-p125" ) {
+class rbenv ( $user, $compile=true, $version="1.9.3-p194" ) {
 
   include rbenv::dependencies
 
