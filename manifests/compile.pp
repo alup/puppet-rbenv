@@ -3,6 +3,22 @@
 # "ruby-build" utility.
 define rbenv::compile( $user, $ruby_version ) {
 
+  # FIXME : move this to top level to be DRY
+  # Assign different values for shared install
+  case $user {
+    'root':  {
+      $home_dir =  "/root"
+      $root_dir = "/usr/local"
+      $install_dir = "rbenv"
+    }
+    default: {
+      $home_dir = "/home/${user}"
+      $root_dir = "/home/${user}"
+      $install_dir = ".rbenv"
+    }
+  }
+
+
   # Set Timeout to disabled cause we need a lot of time to compile.
   # Use HOME variable and define PATH correctly.
   exec { "install ruby ${ruby_version}":
@@ -10,10 +26,10 @@ define rbenv::compile( $user, $ruby_version ) {
     timeout     => 0,
     user        => $user,
     group       => $user,
-    cwd         => "/home/${user}",
-    environment => [ "HOME=/home/${user}" ],
-    onlyif      => ['[ -n "$(which rbenv)" ]', "[ ! -e /home/${user}/.rbenv/versions/${ruby_version} ]"],
-    path        => ["home/${user}/.rbenv/shims", "/home/${user}/.rbenv/bin", "/bin", "/usr/local/bin", "/usr/bin", "/usr/sbin"],
+    cwd         => $home_dir,
+    environment => [ "HOME=${home_dir}" ],
+    onlyif      => ['[ -n "$(which rbenv)" ]', "[ ! -e ${root_dir}/${install_dir}/versions/${ruby_version} ]"],
+    path        => ["${root_dir}/${install_dir}/shims", "${root_dir}/${install_dir}/bin", "/bin", "/usr/local/bin", "/usr/bin", "/usr/sbin"],
     require     => [Class['rbenv::dependencies'], Exec['checkout ruby-build plugin']],
   }
 
@@ -21,10 +37,10 @@ define rbenv::compile( $user, $ruby_version ) {
     command     => "rbenv rehash",
     user        => $user,
     group       => $user,
-    cwd         => "/home/${user}",
-    environment => [ "HOME=/home/${user}" ],
+    cwd         => $home_dir,
+    environment => [ "HOME=${home_dir}" ],
     onlyif      => '[ -n "$(which rbenv)" ]',
-    path        => ["home/${user}/.rbenv/shims", "/home/${user}/.rbenv/bin", "/bin", "/usr/local/bin", "/usr/bin", "/usr/sbin"],
+    path        => ["${root_dir}/${install_dir}/shims", "${root_dir}/${install_dir}/bin", "/bin", "/usr/local/bin", "/usr/bin", "/usr/sbin"],
     require     => Exec["install ruby ${ruby_version}"],
   }
 
@@ -32,11 +48,11 @@ define rbenv::compile( $user, $ruby_version ) {
     command     => "rbenv global ${ruby_version}",
     user        => $user,
     group       => $user,
-    cwd         => "/home/${user}",
-    environment => [ "HOME=/home/${user}" ],
+    cwd         => $home_dir,
+    environment => [ "HOME=${home_dir}" ],
     onlyif      => '[ -n "$(which rbenv)" ]',
-    unless      => "grep ${ruby_version} /home/${user}/.rbenv/version 2>/dev/null",
-    path        => ["home/${user}/.rbenv/shims", "/home/${user}/.rbenv/bin", "/bin", "/usr/local/bin", "/usr/bin", "/usr/sbin"],
+    unless      => "grep ${ruby_version} ${root_dir}/${install_dir}/version 2>/dev/null",
+    path        => ["${root_dir}/${install_dir}/shims", "${root_dir}/${install_dir}/bin", "/bin", "/usr/local/bin", "/usr/bin", "/usr/sbin"],
     require     => [Exec["install ruby ${ruby_version}"], Exec['rehash-rbenv']],
   }
 }
