@@ -6,7 +6,7 @@ describe 'rbenv::compile', :type => :define do
 
   it "installs ruby of the chosen version" do
     should contain_exec("install ruby #{params[:ruby_version]}").
-      with_command("rbenv-install #{params[:ruby_version]}")
+      with_command("rbenv install #{params[:ruby_version]}")
   end
 
   it "issues a rehash command" do

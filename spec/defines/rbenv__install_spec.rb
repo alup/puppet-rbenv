@@ -12,7 +12,7 @@ describe 'rbenv::install', :type => :define do
 
     it "appends in .bashrc, a command to include .rbenv/bin folder in PATH env variable" do
       should contain_exec("configure rbenv path").
-        with_command('echo "export PATH=\$HOME/.rbenv/bin:\$PATH" >> .bashrc')
+        with_command('echo "export PATH=/home/tester/.rbenv/bin:$PATH" >> .bashrc')
     end
 
     it "appends in .bashrc, a command to initialiaze rbenv in each bash session" do
@@ -24,13 +24,8 @@ describe 'rbenv::install', :type => :define do
 
   context 'install ruby-build' do
     it "clones ruby-build" do
-      should contain_exec("checkout ruby-build").
+      should contain_exec("checkout ruby-build plugin").
         with_command("git clone git://github.com/sstephenson/ruby-build.git")
-    end
-
-    it "runs installation shell script" do
-      should contain_exec("install ruby-build").
-        with_command("sh install.sh")
     end
   end
 
