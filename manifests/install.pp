@@ -15,7 +15,7 @@ define rbenv::install ( $user ) {
   }
 
   # STEP 1
-  exec { "checkout rbenv":
+  exec { "checkout rbenv $user":
     command => "git clone git://github.com/sstephenson/rbenv.git ${install_dir}",
     user    => $user,
     group   => $user,
@@ -27,7 +27,7 @@ define rbenv::install ( $user ) {
   }
 
   # STEP 2
-  exec { "configure rbenv path":
+  exec { "configure rbenv path $user":
     command => "echo \"export PATH=${root_dir}/${install_dir}/bin:\$PATH\" >> .bashrc",
     user    => $user,
     group   => $user,
@@ -38,7 +38,7 @@ define rbenv::install ( $user ) {
   }
 
   # STEP 3
-  exec { "configure rbenv init":
+  exec { "configure rbenv init $user":
     command => 'echo "eval \"\$(rbenv init -)\"" >> .bashrc',
     user    => $user,
     group   => $user,
@@ -48,17 +48,17 @@ define rbenv::install ( $user ) {
     path    => ["/bin", "/usr/bin", "/usr/sbin"],
   }
 
-  file { "mkdir plugins":
+  file { "mkdir plugins $user":
     ensure  => directory,
     path    => "${root_dir}/${install_dir}/plugins",
     owner   => $user,
     group   => $user,
-    require => Exec['checkout rbenv'],
+    require => Exec["checkout rbenv $user"],
   }
 
   # STEP 4
   # Install ruby-build under rbenv plugins directory
-  exec { "checkout ruby-build plugin":
+  exec { "checkout ruby-build plugin $user":
     command => "git clone git://github.com/sstephenson/ruby-build.git",
     user    => $user,
     group   => $user,
@@ -66,7 +66,7 @@ define rbenv::install ( $user ) {
     creates => "${root_dir}/${install_dir}/plugins/ruby-build",
     path    => ["/usr/bin", "/usr/sbin"],
     timeout => 100,
-    require => File['mkdir plugins'],
+    require => File["mkdir plugins $user"],
   }
 
   # TODO: Support old way of non-plugin installation for ruby-build
