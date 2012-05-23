@@ -30,7 +30,7 @@ define rbenv::compile( $user, $ruby_version ) {
     environment => [ "HOME=${home_dir}" ],
     onlyif      => ['[ -n "$(which rbenv)" ]', "[ ! -e ${root_dir}/${install_dir}/versions/${ruby_version} ]"],
     path        => ["${root_dir}/${install_dir}/shims", "${root_dir}/${install_dir}/bin", "/bin", "/usr/local/bin", "/usr/bin", "/usr/sbin"],
-    require     => [Class['rbenv::dependencies'], Exec["checkout ruby-build plugin $user"]],
+    require     => [Class['rbenv::dependencies'], Exec["rbenv::install::${user}::checkout_ruby_build"]],
   }
 
   exec { "rehash-rbenv $user":
