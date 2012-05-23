@@ -21,7 +21,7 @@ define rbenv::compile( $user, $ruby_version ) {
 
   # Set Timeout to disabled cause we need a lot of time to compile.
   # Use HOME variable and define PATH correctly.
-  exec { "install ruby ${ruby_version}":
+  exec { "install ruby ${user} ${ruby_version}":
     command     => "rbenv install ${ruby_version}",
     timeout     => 0,
     user        => $user,
@@ -30,10 +30,10 @@ define rbenv::compile( $user, $ruby_version ) {
     environment => [ "HOME=${home_dir}" ],
     onlyif      => ['[ -n "$(which rbenv)" ]', "[ ! -e ${root_dir}/${install_dir}/versions/${ruby_version} ]"],
     path        => ["${root_dir}/${install_dir}/shims", "${root_dir}/${install_dir}/bin", "/bin", "/usr/local/bin", "/usr/bin", "/usr/sbin"],
-    require     => [Class['rbenv::dependencies'], Exec['checkout ruby-build plugin']],
+    require     => [Class['rbenv::dependencies'], Exec["rbenv::install::${user}::checkout_ruby_build"]],
   }
 
-  exec { "rehash-rbenv":
+  exec { "rehash-rbenv $user":
     command     => "rbenv rehash",
     user        => $user,
     group       => $user,
@@ -41,10 +41,10 @@ define rbenv::compile( $user, $ruby_version ) {
     environment => [ "HOME=${home_dir}" ],
     onlyif      => '[ -n "$(which rbenv)" ]',
     path        => ["${root_dir}/${install_dir}/shims", "${root_dir}/${install_dir}/bin", "/bin", "/usr/local/bin", "/usr/bin", "/usr/sbin"],
-    require     => Exec["install ruby ${ruby_version}"],
+    require     => Exec["install ruby ${user} ${ruby_version}"],
   }
 
-  exec { "set-ruby_version":
+  exec { "set-ruby_version $user":
     command     => "rbenv global ${ruby_version}",
     user        => $user,
     group       => $user,
@@ -53,6 +53,6 @@ define rbenv::compile( $user, $ruby_version ) {
     onlyif      => '[ -n "$(which rbenv)" ]',
     unless      => "grep ${ruby_version} ${root_dir}/${install_dir}/version 2>/dev/null",
     path        => ["${root_dir}/${install_dir}/shims", "${root_dir}/${install_dir}/bin", "/bin", "/usr/local/bin", "/usr/bin", "/usr/sbin"],
-    require     => [Exec["install ruby ${ruby_version}"], Exec['rehash-rbenv']],
+    require     => [Exec["install ruby ${user} ${ruby_version}"], Exec["rehash-rbenv $user"]],
   }
 }
