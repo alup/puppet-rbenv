@@ -17,4 +17,9 @@ describe 'rbenv::dependencies' do
     let(:facts) { { :operatingsystem => 'CentOS' } }
     it { should include_class('rbenv::dependencies::centos') }
   end
+
+  context 'RedHat' do
+    let(:facts) { { :operatingsystem => 'RedHat' } }
+    it { should include_class('rbenv::dependencies::centos') }
+  end
 end
