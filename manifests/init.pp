@@ -17,21 +17,29 @@
 # Sample Usage:
 #
 #     class { "rbenv":
-#         user    => "alup",
-#         compile => true,
-#         version => "1.9.3-p0",
+#         user     => "alup",
+#         group    => "users",
+#         home_dir => "/project/alup",
+#         compile  => true,
+#         version  => "1.9.3-p0",
 #     }
 #
 # [Remember: No empty lines between comments and class definition]
-class rbenv ( $user, $compile=true, $version="1.9.3-p194" ) {
+class rbenv ( $user, $group=$user, $home_dir="/home/${user}", $compile=true, $version='1.9.3-p194' ) {
 
   include rbenv::dependencies
 
-  rbenv::install { "rbenv::install::${user}": user => $user }
+  rbenv::install { "rbenv::install::${user}":
+    user      => $user,
+    group     => $group,
+    home_dir  => $home_dir,
+  }
 
   if $compile {
     rbenv::compile { "rbenv::compile::${user}::${version}":
       user         => $user,
+      group        => $group,
+      home_dir     => $home_dir,
       ruby_version => $version,
     }
   }
