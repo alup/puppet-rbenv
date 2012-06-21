@@ -32,7 +32,8 @@ You can use the module in your manifest with the following code:
 ```
 class { "rbenv":
   user      => "alup",
-  home_dir  => "/project/"
+  group     => 'project'
+  home_dir  => '/project'
   compile   => true,
   version   => "1.9.3-p125",
 }

@@ -1,7 +1,7 @@
 # The following part is optional! It just compiles and installs the chosen
 # global ruby version to help on bootstrapping. To achieve this, it uses
 # "ruby-build" utility.
-define rbenv::compile( $user, $home_dir, $ruby_version ) {
+define rbenv::compile( $user, $group, $home_dir, $ruby_version ) {
 
   # FIXME : move this to top level to be DRY
   # Assign different values for shared install
@@ -24,7 +24,7 @@ define rbenv::compile( $user, $home_dir, $ruby_version ) {
     command     => "rbenv install ${ruby_version}",
     timeout     => 0,
     user        => $user,
-    group       => $user,
+    group       => $group,
     cwd         => $home_dir,
     environment => [ "HOME=${home_dir}" ],
     onlyif      => ['[ -n "$(which rbenv)" ]', "[ ! -e ${root_dir}/${install_dir}/versions/${ruby_version} ]"],
@@ -35,7 +35,7 @@ define rbenv::compile( $user, $home_dir, $ruby_version ) {
   exec { "rehash-rbenv $user":
     command     => "rbenv rehash",
     user        => $user,
-    group       => $user,
+    group       => $group,
     cwd         => $home_dir,
     environment => [ "HOME=${home_dir}" ],
     onlyif      => '[ -n "$(which rbenv)" ]',
@@ -46,7 +46,7 @@ define rbenv::compile( $user, $home_dir, $ruby_version ) {
   exec { "set-ruby_version $user":
     command     => "rbenv global ${ruby_version}",
     user        => $user,
-    group       => $user,
+    group       => $group,
     cwd         => $home_dir,
     environment => [ "HOME=${home_dir}" ],
     onlyif      => '[ -n "$(which rbenv)" ]',

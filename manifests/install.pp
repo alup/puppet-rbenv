@@ -1,4 +1,4 @@
-define rbenv::install ( $user, $home_dir ) {
+define rbenv::install ( $user, $group, $home_dir ) {
 
   # Assign different values for shared install
   case $user {
@@ -17,7 +17,7 @@ define rbenv::install ( $user, $home_dir ) {
   exec { "rbenv::install::${user}::checkout":
     command => "git clone git://github.com/sstephenson/rbenv.git ${install_dir}",
     user    => $user,
-    group   => $user,
+    group   => $group,
     cwd     => $root_dir,
     creates => "${root_dir}/${install_dir}",
     path    => ["/usr/bin", "/usr/sbin"],
@@ -29,7 +29,7 @@ define rbenv::install ( $user, $home_dir ) {
   exec { "rbenv::install::${user}::add_path_to_bashrc":
     command => "echo \"export PATH=${root_dir}/${install_dir}/bin:\$PATH\" >> .bashrc",
     user    => $user,
-    group   => $user,
+    group   => $group,
     cwd     => $home_dir,
     onlyif  => "[ -f ${home_dir}/.bashrc ]",
     unless  => "grep ${install_dir}/bin ${home_dir}/.bashrc 2>/dev/null",
@@ -40,7 +40,7 @@ define rbenv::install ( $user, $home_dir ) {
   exec { "rbenv::install::${user}::add_init_to_bashrc":
     command => 'echo "eval \"\$(rbenv init -)\"" >> .bashrc',
     user    => $user,
-    group   => $user,
+    group   => $group,
     cwd     => $home_dir,
     onlyif  => "[ -f ${home_dir}/.bashrc ]",
     unless  => "grep 'rbenv init -' ${home_dir}/.bashrc 2>/dev/null",
@@ -52,7 +52,7 @@ define rbenv::install ( $user, $home_dir ) {
     ensure  => directory,
     path    => "${root_dir}/${install_dir}/plugins",
     owner   => $user,
-    group   => $user,
+    group   => $group,
     require => Exec["rbenv::install::${user}::checkout"],
   }
 
@@ -61,7 +61,7 @@ define rbenv::install ( $user, $home_dir ) {
   exec { "rbenv::install::${user}::checkout_ruby_build":
     command => "git clone git://github.com/sstephenson/ruby-build.git",
     user    => $user,
-    group   => $user,
+    group   => $group,
     cwd     => "${root_dir}/${install_dir}/plugins",
     creates => "${root_dir}/${install_dir}/plugins/ruby-build",
     path    => ["/usr/bin", "/usr/sbin"],
