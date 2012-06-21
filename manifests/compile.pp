@@ -1,7 +1,7 @@
 # The following part is optional! It just compiles and installs the chosen
 # global ruby version to help on bootstrapping. To achieve this, it uses
 # "ruby-build" utility.
-define rbenv::compile( $user, $ruby_version ) {
+define rbenv::compile( $user, $home_dir, $ruby_version ) {
 
   # FIXME : move this to top level to be DRY
   # Assign different values for shared install
@@ -12,8 +12,7 @@ define rbenv::compile( $user, $ruby_version ) {
       $install_dir = "rbenv"
     }
     default: {
-      $home_dir = "/home/${user}"
-      $root_dir = "/home/${user}"
+      $root_dir = $home_dir
       $install_dir = ".rbenv"
     }
   }

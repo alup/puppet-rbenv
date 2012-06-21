@@ -1,4 +1,4 @@
-define rbenv::install ( $user ) {
+define rbenv::install ( $user, $home_dir ) {
 
   # Assign different values for shared install
   case $user {
@@ -8,8 +8,7 @@ define rbenv::install ( $user ) {
       $install_dir = "rbenv"
     }
     default: {
-      $home_dir = "/home/${user}"
-      $root_dir = "/home/${user}"
+      $root_dir = $home_dir
       $install_dir = ".rbenv"
     }
   }
