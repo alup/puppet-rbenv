@@ -25,7 +25,7 @@
 #     }
 #
 # [Remember: No empty lines between comments and class definition]
-class rbenv ( $user, $group="${user}", $home_dir="/home/${user}", $compile=true, $version='1.9.3-p194' ) {
+class rbenv ( $user, $group=$user, $home_dir="/home/${user}", $compile=true, $version='1.9.3-p194' ) {
 
   include rbenv::dependencies
 

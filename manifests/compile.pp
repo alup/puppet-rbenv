@@ -7,13 +7,13 @@ define rbenv::compile( $user, $group, $home_dir, $ruby_version ) {
   # Assign different values for shared install
   case $user {
     'root':  {
-      $home_dir =  "/root"
-      $root_dir = "/usr/local"
-      $install_dir = "rbenv"
+      $home_dir =  '/root'
+      $root_dir = '/usr/local'
+      $install_dir = 'rbenv'
     }
     default: {
       $root_dir = $home_dir
-      $install_dir = ".rbenv"
+      $install_dir = '.rbenv'
     }
   }
 
@@ -28,18 +28,18 @@ define rbenv::compile( $user, $group, $home_dir, $ruby_version ) {
     cwd         => $home_dir,
     environment => [ "HOME=${home_dir}" ],
     onlyif      => ['[ -n "$(which rbenv)" ]', "[ ! -e ${root_dir}/${install_dir}/versions/${ruby_version} ]"],
-    path        => ["${root_dir}/${install_dir}/shims", "${root_dir}/${install_dir}/bin", "/bin", "/usr/local/bin", "/usr/bin", "/usr/sbin"],
+    path        => ["${root_dir}/${install_dir}/shims", "${root_dir}/${install_dir}/bin", '/bin', '/usr/local/bin', '/usr/bin', '/usr/sbin'],
     require     => [Class['rbenv::dependencies'], Exec["rbenv::install::${user}::checkout_ruby_build"]],
   }
 
   exec { "rehash-rbenv $user":
-    command     => "rbenv rehash",
+    command     => 'rbenv rehash',
     user        => $user,
     group       => $group,
     cwd         => $home_dir,
     environment => [ "HOME=${home_dir}" ],
     onlyif      => '[ -n "$(which rbenv)" ]',
-    path        => ["${root_dir}/${install_dir}/shims", "${root_dir}/${install_dir}/bin", "/bin", "/usr/local/bin", "/usr/bin", "/usr/sbin"],
+    path        => ["${root_dir}/${install_dir}/shims", "${root_dir}/${install_dir}/bin", '/bin', '/usr/local/bin', '/usr/bin', '/usr/sbin'],
     require     => Exec["install ruby ${user} ${ruby_version}"],
   }
 
@@ -51,7 +51,7 @@ define rbenv::compile( $user, $group, $home_dir, $ruby_version ) {
     environment => [ "HOME=${home_dir}" ],
     onlyif      => '[ -n "$(which rbenv)" ]',
     unless      => "grep ${ruby_version} ${root_dir}/${install_dir}/version 2>/dev/null",
-    path        => ["${root_dir}/${install_dir}/shims", "${root_dir}/${install_dir}/bin", "/bin", "/usr/local/bin", "/usr/bin", "/usr/sbin"],
+    path        => ["${root_dir}/${install_dir}/shims", "${root_dir}/${install_dir}/bin", '/bin', '/usr/local/bin', '/usr/bin', '/usr/sbin'],
     require     => [Exec["install ruby ${user} ${ruby_version}"], Exec["rehash-rbenv $user"]],
   }
 }
