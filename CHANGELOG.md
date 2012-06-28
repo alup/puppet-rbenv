@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.0
+
+- Add option to set group of the user [GH-9]
+- Add option to set user home
+
 ## 0.2.0
 
 - CentOS, Redhat compatibility [GH-5]
