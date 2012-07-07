@@ -27,7 +27,7 @@ define rbenv::install ( $user, $group, $home_dir ) {
 
   # STEP 2
   exec { "rbenv::install::${user}::add_path_to_bashrc":
-    command => "echo \"export PATH=${root_dir}/${install_dir}/bin:\$PATH\" >> .bashrc",
+    command => "echo \"export PATH=${root_dir}/${install_dir}/bin:\\\$PATH\" >> .bashrc",
     user    => $user,
     group   => $group,
     cwd     => $home_dir,
