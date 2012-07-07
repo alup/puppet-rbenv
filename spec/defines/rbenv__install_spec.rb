@@ -12,7 +12,7 @@ describe 'rbenv::install', :type => :define do
 
     it "appends in .bashrc, a command to include .rbenv/bin folder in PATH env variable" do
       should contain_exec("rbenv::install::#{params[:user]}::add_path_to_bashrc").
-        with_command('echo "export PATH=/home/tester/.rbenv/bin:$PATH" >> .bashrc')
+        with_command('echo "export PATH=/home/tester/.rbenv/bin:\\$PATH" >> .bashrc')
     end
 
     it "appends in .bashrc, a command to initialiaze rbenv in each bash session" do
