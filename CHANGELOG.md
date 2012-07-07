@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.1
+
+- Fix escape string for PATH environment variable [GH-11]
+
 ## 0.3.0
 
 - Add option to set group of the user [GH-9]
