@@ -18,7 +18,7 @@ define rbenv::gem($gemname, $foruser, $rubyversion, $gemversion = 'latest') {
   # install specific version
   exec {
     "install rbenv gem $gemname in ruby $rubyversion for $foruser":
-      command => "$gemcmd install $gemname --quiet $installversion",
+      command => "$gemcmd install $gemname --quiet --no-ri --no-rdoc $installversion",
       path    => [ "/home/$name/.rbenv/shims", "/home/$name/.rbenv/bin", '/usr/bin', '/bin'],
       user => $foruser,
       unless  => $unless,
