@@ -8,7 +8,8 @@ define rbenv::gem($gemname, $foruser, $rubyversion, $gemversion = 'latest') {
  
   # determine if they need the requested version/update
   if( $gemversion == 'latest') {
-    $unless = "$version_assert && $gemcmd outdated | grep -v $gemname"
+    # phrased in the positive, gem should not appear in gem outdated, and should not appear in gem list
+    $unless = "$version_assert && ( ( ! $gemcmd outdated | grep $gemname ) || ( ! $gemcmd list | grep $gemname ) )"
     $installversion = ''
   } else {
     $unless = "$version_assert && $gemcmd list | grep $gemname | grep $gemversion"
