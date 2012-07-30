@@ -4,14 +4,9 @@
 define rbenv::compile($user, $group, $ruby_version) {
 
   $path = [
-    "${rbenv::paths::root}/${rbenv::paths::dest}/shims",
-    "${rbenv::paths::root}/${rbenv::paths::dest}/bin",
+    $rbenv::paths::shims, $rbenv::paths::bin,
     '/bin', '/usr/local/bin', '/usr/bin', '/usr/sbin'
   ]
-
-  $ver   = "${rbenv::paths::root}/${rbenv::paths::dest}/version"
-  $shims = "${rbenv::paths::root}/${rbenv::paths::dest}/shims"
-  $rbenv = "${rbenv::paths::root}/${rbenv::paths::dest}/bin/rbenv"
 
   # Set Timeout to disabled cause we need a lot of time to compile.
   # Use HOME variable and define PATH correctly.
@@ -22,7 +17,7 @@ define rbenv::compile($user, $group, $ruby_version) {
     group       => $group,
     cwd         => $rbenv::paths::home,
     environment => [ "HOME=${rbenv::paths::home}" ],
-    creates     => "${rbenv::paths::root}/${rbenv::paths::dest}/versions/${ruby_version}",
+    creates     => "${rbenv::paths::versions}/${ruby_version}",
     onlyif      => "[ -e '${rbenv}' ]",
     path        => $path,
     require     => [Class['rbenv::dependencies'], Exec["rbenv::install::${user}::checkout_ruby_build"]],
@@ -34,16 +29,17 @@ define rbenv::compile($user, $group, $ruby_version) {
     group       => $group,
     cwd         => $rbenv::paths::home,
     environment => [ "HOME=${rbenv::paths::home}" ],
-    creates     => "${shims}/ruby",
+    creates     => "${rbenv::paths::shims}/ruby",
     onlyif      => "[ -e '${rbenv}' ]",
     path        => $path,
     require     => Exec["install ruby ${user} ${ruby_version}"],
   }
 
   file { "set-ruby_version $user":
-    path    => $ver,
-    content => $ruby_version,
+    path    => $rbenv::paths::global_version,
+    content => "$ruby_version\n",
     owner   => $user,
     group   => $group,
   }
+
 }

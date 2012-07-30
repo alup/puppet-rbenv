@@ -2,11 +2,10 @@ define rbenv::install($user, $group) {
 
   # STEP 1
   exec { "rbenv::install::${user}::checkout":
-    command => "git clone git://github.com/sstephenson/rbenv.git ${rbenv::paths::dest}",
+    command => "git clone git://github.com/sstephenson/rbenv.git ${rbenv::paths::root}",
     user    => $user,
     group   => $group,
-    cwd     => $rbenv::paths::root,
-    creates => "${rbenv::paths::root}/${rbenv::paths::dest}",
+    creates => $rbenv::paths::root,
     path    => ['/usr/bin', '/usr/sbin'],
     timeout => 100,
     require => Package['git'],
@@ -28,7 +27,6 @@ define rbenv::install($user, $group) {
     command => "echo 'source ${rbenvrc}' >> ${bashrc}",
     user    => $user,
     group   => $group,
-    cwd     => $rbenv::paths::home,
     unless  => "grep -q rbenvrc ${bashrc}",
     path    => ['/bin', '/usr/bin', '/usr/sbin'],
     require => File["rbenv::install::${user}::rbenvrc"],
@@ -36,7 +34,7 @@ define rbenv::install($user, $group) {
 
   file { "rbenv::install::${user}::make_plugins_dir":
     ensure  => directory,
-    path    => "${rbenv::paths::root}/${rbenv::paths::dest}/plugins",
+    path    => $rbenv::paths::plugins,
     owner   => $user,
     group   => $group,
     require => Exec["rbenv::install::${user}::checkout"],
@@ -45,13 +43,13 @@ define rbenv::install($user, $group) {
   # STEP 4
   # Install ruby-build under rbenv plugins directory
   exec { "rbenv::install::${user}::checkout_ruby_build":
-    command => 'git clone git://github.com/sstephenson/ruby-build.git',
+    command => "git clone git://github.com/sstephenson/ruby-build.git ${rbenv::paths::plugins}",
     user    => $user,
     group   => $group,
-    cwd     => "${rbenv::paths::root}/${rbenv::paths::dest}/plugins",
-    creates => "${rbenv::paths::root}/${rbenv::paths::dest}/plugins/ruby-build",
+    creates => "${rbenv::paths::plugins}/ruby-build",
     path    => ['/usr/bin', '/usr/sbin'],
     timeout => 100,
     require => File["rbenv::install::${user}::make_plugins_dir"],
   }
+
 }
