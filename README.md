@@ -1,76 +1,68 @@
 # Puppet-Rbenv
 
-[![Build Status](https://secure.travis-ci.org/alup/puppet-rbenv.png?branch=master)](http://travis-ci.org/alup/puppet-rbenv)
-
 ## About
 
 This project provides manifests for the installation of
 [rbenv](https://github.com/sstephenson/rbenv) (Ruby Version Management).
 
 
-## Install
-
-1. Install dependencies (Rubygems and Puppet):
-
-        sudo apt-get install rubygems puppet # Ubuntu/Debian
-
-2. Apply the catalog of chosen modules(serverless install):
-
-        puppet apply ...
-
-You can also download and install the module from puppet-forge via 
-```puppet-module``` by running:
-
-```shell
-puppet-module install alup/rbenv
-```
-
-## Usage
+## Rbenv installation
 
 You can use the module in your manifest with the following code:
 
 ```
-class { "rbenv":
-  user      => 'alup',
-  group     => 'project'
-  home_dir  => '/project'
-  compile   => true,
-  version   => '1.9.3-p125',
+rbenv::install { "someuser":
+  group => 'project'
+  home  => '/project'
 }
 ```
 
-This will apply an rbenv installation under "alup" user home dir
-and will also compile ruby version 1.9.3-p125 to be ready for usage
-(It will also set it as the global rbenv version for this user).
+This will apply an rbenv installation under "someuser" home dir
+and place it into ".rbenv". You can change the resource title to
+your taste, and pass the user on which install rbenv using the
+`user` parameter.
 
-If you want only an rbenv installation without compiling any ruby
-version, then just set ```compile``` parameter to ```false``` (It
-defaults to ```true```).
+The rbenv directory can be changed by passing the "root" parameter,
+that must be an absolute path.
 
-All the variables except for the ```user```, are optional.
+## Ruby compilation
 
-## Dry-run
+To compile a ruby interpreter, you use `rbenv::compile` as follows:
 
-If you want to just simulate (or smoke test) the installation of the
-module, just clone the repository and use the following command:
-
-```shell
-sudo puppet apply --noop --modulepath=$PWD/../ tests/init.pp
+```
+rbenv::compile { "1.9.3-p370":
+  user => "someuser",
+  home => "/project",
+}
 ```
 
+The resource title is used as the ruby version, but if you have
+multiple rubies under multiple users, you'll have to define them
+explicitly:
 
-## Testing
+```
+rbenv::compile { "foo/1.8.7":
+  user => "foo",
+  ruby => "1.8.7-p370",
+}
 
-To run the tests, use ```bundle exec rake```. Before running the tests,
-you should have run ```bundle install``` to ensure all the dependencies
-have been met.
+rbenv::compile { "bar/1.8.7":
+  user => bar",
+  ruby => "1.8.7-p370",
+}
+```
 
+`rbenv rehash` is performed each time a new ruby or a new gem is
+installed.
 
-## Todo
-
-Look at the TODO file.
-
+You can use the `default` parameter to set an interpreter as the
+default one for the given user. Please note that only one default
+is allowed, duplicate resources will be defined if you specify
+multiple default ruby version.
 
 ## License
 
-MIT License. Copyright 2012 Andreas Loupasakis.
+MIT License.
+
+Copyright 2012 Andreas Loupasakis
+Copyright 2012 Marcello Barnaba <vjt@openssl.it>

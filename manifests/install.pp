@@ -1,55 +1,60 @@
-define rbenv::install($user, $group) {
+define rbenv::install(
+  $user  = $title,
+  $group = $user,
+  $home  = "/home/$user",
+  $root  = "${home}/.rbenv",
+) {
 
-  # STEP 1
-  exec { "rbenv::install::${user}::checkout":
-    command => "git clone git://github.com/sstephenson/rbenv.git ${rbenv::paths::root}",
+  $rbenvrc = "${home}/.rbenvrc"
+  $bashrc  = "${home}/.bashrc"
+  $plugins = "${root}/plugins"
+
+  if ! defined( Class['rbenv-dependencies'] ) {
+    require rbenv::dependencies
+  }
+
+  exec { "rbenv::checkout ${user}":
+    command => "git clone git://github.com/sstephenson/rbenv.git ${root}",
     user    => $user,
     group   => $group,
-    creates => $rbenv::paths::root,
+    creates => $root,
     path    => ['/usr/bin', '/usr/sbin'],
     timeout => 100,
     require => Package['git'],
   }
 
-  # STEP 2
-  $rbenvrc = "${rbenv::paths::home}/.rbenvrc"
-  $bashrc  = "${rbenv::paths::home}/.bashrc"
-
-  file { "rbenv::install::${user}::rbenvrc":
+  file { "rbenv::rbenvrc ${user}":
     path    => $rbenvrc,
     owner   => $user,
     group   => $group,
     content => template('rbenv/dot.rbenvrc.erb'),
   }
 
-  # STEP 3
-  exec { "rbenv::install::${user}::add_init_to_bashrc":
+  exec { "rbenv::bashrc ${user}":
     command => "echo 'source ${rbenvrc}' >> ${bashrc}",
     user    => $user,
     group   => $group,
     unless  => "grep -q rbenvrc ${bashrc}",
     path    => ['/bin', '/usr/bin', '/usr/sbin'],
-    require => File["rbenv::install::${user}::rbenvrc"],
+    require => File["rbenv::rbenvrc ${user}"],
   }
 
-  file { "rbenv::install::${user}::make_plugins_dir":
+  file { "rbenv::plugins ${user}":
     ensure  => directory,
-    path    => $rbenv::paths::plugins,
+    path    => $plugins,
     owner   => $user,
     group   => $group,
-    require => Exec["rbenv::install::${user}::checkout"],
+    require => Exec["rbenv::checkout ${user}"],
   }
 
-  # STEP 4
-  # Install ruby-build under rbenv plugins directory
-  exec { "rbenv::install::${user}::checkout_ruby_build":
-    command => "git clone git://github.com/sstephenson/ruby-build.git ${rbenv::paths::plugins}",
+  exec { "rbenv::ruby-build ${user}":
+    command => "git clone git://github.com/sstephenson/ruby-build.git ${plugins}",
     user    => $user,
     group   => $group,
-    creates => "${rbenv::paths::plugins}/ruby-build",
+    creates => "${plugins}/ruby-build",
     path    => ['/usr/bin', '/usr/sbin'],
     timeout => 100,
-    require => File["rbenv::install::${user}::make_plugins_dir"],
+    require => File["rbenv::plugins ${user}"],
   }
 
 }
