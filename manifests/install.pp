@@ -1,7 +1,5 @@
 define rbenv::install($user, $group, $home_dir) {
 
-  class {'paths': user => $user, home => $home_dir}
-
   # STEP 1
   exec { "rbenv::install::${user}::checkout":
     command => "git clone git://github.com/sstephenson/rbenv.git ${rbenv::paths::dest}",
@@ -57,16 +55,4 @@ define rbenv::install($user, $group, $home_dir) {
     timeout => 100,
     require => File["rbenv::install::${user}::make_plugins_dir"],
   }
-
-  # TODO: Support old way of non-plugin installation for ruby-build
-  # STEP 5
-  #  exec { 'install ruby-build':
-  #    command => 'sh install.sh',
-  #  user    => 'root',
-  #  group   => 'root',
-  #  cwd     => "${root_dir}/ruby-build",
-  #  onlyif  => '[ -z "$(which ruby-build)" ]',
-  #  path    => ['/bin', '/usr/local/bin', '/usr/bin', '/usr/sbin'],
-  #  require => Exec["rbenv::install::${user}::checkout_ruby_build"],
-  #}
 }
