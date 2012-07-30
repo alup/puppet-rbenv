@@ -13,26 +13,25 @@ define rbenv::install($user, $group) {
   }
 
   # STEP 2
-  exec { "rbenv::install::${user}::add_path_to_bashrc":
-    command => "echo \"export PATH=${rbenv::paths::root}/${rbenv::paths::dest}/bin:\\\$PATH\" >> .bashrc",
-    user    => $user,
+  $rbenvrc = "${rbenv::paths::home}/.rbenvrc"
+  $bashrc  = "${rbenv::paths::home}/.bashrc"
+
+  file { "rbenv::install::${user}::rbenvrc":
+    path    => $rbenvrc,
+    owner   => $user,
     group   => $group,
-    cwd     => $rbenv::paths::home,
-    onlyif  => "[ -f ${rbenv::paths::home}/.bashrc ]",
-    unless  => "grep -q ${rbenv::paths::dest}/bin ${rbenv::paths::home}/.bashrc",
-    path    => ['/bin', '/usr/bin', '/usr/sbin'],
+    content => template('rbenv/dot.rbenvrc.erb'),
   }
 
   # STEP 3
   exec { "rbenv::install::${user}::add_init_to_bashrc":
-    command => 'echo "eval \"\$(rbenv init -)\"" >> .bashrc',
+    command => "echo 'source ${rbenvrc}' >> ${bashrc}",
     user    => $user,
     group   => $group,
     cwd     => $rbenv::paths::home,
-    onlyif  => "[ -f ${rbenv::paths::home}/.bashrc ]",
-    unless  => "grep -q 'rbenv init -' ${rbenv::paths::home}/.bashrc",
+    unless  => "grep -q rbenvrc ${bashrc}",
     path    => ['/bin', '/usr/bin', '/usr/sbin'],
-    require => Exec["rbenv::install::${user}::add_path_to_bashrc"],
+    require => File["rbenv::install::${user}::rbenvrc"],
   }
 
   file { "rbenv::install::${user}::make_plugins_dir":
