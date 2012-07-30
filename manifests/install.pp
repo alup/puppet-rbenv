@@ -1,25 +1,14 @@
-define rbenv::install ( $user, $group, $home_dir ) {
+define rbenv::install($user, $group, $home_dir) {
 
-  # Assign different values for shared install
-  case $user {
-    'root':  {
-      $home_dir =  '/root'
-      $root_dir = '/usr/local'
-      $install_dir = 'rbenv'
-    }
-    default: {
-      $root_dir = $home_dir
-      $install_dir = '.rbenv'
-    }
-  }
+  class {'paths': user => $user, home => $home_dir}
 
   # STEP 1
   exec { "rbenv::install::${user}::checkout":
-    command => "git clone git://github.com/sstephenson/rbenv.git ${install_dir}",
+    command => "git clone git://github.com/sstephenson/rbenv.git ${rbenv::paths::dest}",
     user    => $user,
     group   => $group,
-    cwd     => $root_dir,
-    creates => "${root_dir}/${install_dir}",
+    cwd     => $rbenv::paths::root,
+    creates => "${rbenv::paths::root}/${rbenv::paths::dest}",
     path    => ['/usr/bin', '/usr/sbin'],
     timeout => 100,
     require => Package['git-core'],
@@ -27,12 +16,12 @@ define rbenv::install ( $user, $group, $home_dir ) {
 
   # STEP 2
   exec { "rbenv::install::${user}::add_path_to_bashrc":
-    command => "echo \"export PATH=${root_dir}/${install_dir}/bin:\\\$PATH\" >> .bashrc",
+    command => "echo \"export PATH=${rbenv::paths::root}/${rbenv::paths::dest}/bin:\\\$PATH\" >> .bashrc",
     user    => $user,
     group   => $group,
-    cwd     => $home_dir,
-    onlyif  => "[ -f ${home_dir}/.bashrc ]",
-    unless  => "grep ${install_dir}/bin ${home_dir}/.bashrc 2>/dev/null",
+    cwd     => $rbenv::paths::home,
+    onlyif  => "[ -f ${rbenv::paths::home}/.bashrc ]",
+    unless  => "grep -q ${rbenv::paths::dest}/bin ${rbenv::paths::home}/.bashrc",
     path    => ['/bin', '/usr/bin', '/usr/sbin'],
   }
 
@@ -41,16 +30,16 @@ define rbenv::install ( $user, $group, $home_dir ) {
     command => 'echo "eval \"\$(rbenv init -)\"" >> .bashrc',
     user    => $user,
     group   => $group,
-    cwd     => $home_dir,
-    onlyif  => "[ -f ${home_dir}/.bashrc ]",
-    unless  => "grep 'rbenv init -' ${home_dir}/.bashrc 2>/dev/null",
+    cwd     => $rbenv::paths::home,
+    onlyif  => "[ -f ${rbenv::paths::home}/.bashrc ]",
+    unless  => "grep -q 'rbenv init -' ${rbenv::paths::home}/.bashrc",
     path    => ['/bin', '/usr/bin', '/usr/sbin'],
     require => Exec["rbenv::install::${user}::add_path_to_bashrc"],
   }
 
   file { "rbenv::install::${user}::make_plugins_dir":
     ensure  => directory,
-    path    => "${root_dir}/${install_dir}/plugins",
+    path    => "${rbenv::paths::root}/${rbenv::paths::dest}/plugins",
     owner   => $user,
     group   => $group,
     require => Exec["rbenv::install::${user}::checkout"],
@@ -62,8 +51,8 @@ define rbenv::install ( $user, $group, $home_dir ) {
     command => 'git clone git://github.com/sstephenson/ruby-build.git',
     user    => $user,
     group   => $group,
-    cwd     => "${root_dir}/${install_dir}/plugins",
-    creates => "${root_dir}/${install_dir}/plugins/ruby-build",
+    cwd     => "${rbenv::paths::root}/${rbenv::paths::dest}/plugins",
+    creates => "${rbenv::paths::root}/${rbenv::paths::dest}/plugins/ruby-build",
     path    => ['/usr/bin', '/usr/sbin'],
     timeout => 100,
     require => File["rbenv::install::${user}::make_plugins_dir"],

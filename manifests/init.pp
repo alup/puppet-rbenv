@@ -29,6 +29,8 @@ class rbenv ( $user, $group=$user, $home_dir="/home/${user}", $compile=true, $ve
 
   include rbenv::dependencies
 
+  class {'paths': user => $user, home => $home_dir}
+
   rbenv::install { "rbenv::install::${user}":
     user      => $user,
     group     => $group,
