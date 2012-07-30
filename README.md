@@ -60,6 +60,20 @@ default one for the given user. Please note that only one default
 is allowed, duplicate resources will be defined if you specify
 multiple default ruby version.
 
+## Gem installation
+
+You can install and keep gems updated for a specific ruby interpreter:
+
+```
+rbenv::gem { "unicorn":
+  user => "foobarbaz",
+  ruby => "1.9.3-p370",
+}
+```
+
+Gems are handled using a Package provider inherited from puppet's
+`gem` one - so `absent` and `latest` work as expected.
+
 ## License
 
 MIT License.
