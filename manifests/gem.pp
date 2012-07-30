@@ -14,9 +14,10 @@ define rbenv::gem(
     fail("Rbenv-Ruby ${ruby} for user ${user} not found in catalog")
   }
 
-  package {"rbenv::${user}/${ruby} :: ${gem}":
-    ensure   => $ensure,
-    provider => 'rbenvgem',
-    root     => "${root}/versions/${ruby}"
+  rbenvgem {"${user}/${ruby}/${gem}":
+    ensure  => $ensure,
+    user    => $user,
+    gemname => $gem,
+    rbenv   => "${root}/versions/${ruby}"
   }
 }

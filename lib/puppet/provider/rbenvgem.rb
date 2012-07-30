@@ -1,41 +1,47 @@
-require 'puppet/provider/package/gem'
-
-# This provider extends the original Gem one, and hacks the "gemcmd" command
-# by adding the prefix passed to the resource into the "root" parameter.
-#
-Puppet::Type.type(:package).provide :rbenvgem, :parent => :gem do
+Puppet::Type.type(:rbenvgem).provide :default do
   desc "Maintains gems inside an RBenv setup"
 
-  commands :gemcmd => 'gem'
+  commands :su => 'su'
 
-  # This provider should never be called by default.
-  def self.specificity
-    -0xff
+  def install
+    args = ['install', '--no-rdoc', '--no-ri']
+    args << "-v#{resource[:ensure]}" if !resource[:ensure].kind_of?(Symbol)
+    args << gem_name
+
+    output = gem(*args)
+    fail "Could not install: #{output.chomp}" if output.include?('ERROR')
   end
 
-  def gemcmd(*args)
-    args.shift
-    args.unshift(scoped_gem)
-
-    super(*args)
+  def uninstall
+    gem 'uninstall', '-aIx', gem_name
   end
 
-  def command(*args)
-    return super unless args.first == :gemcmd
-    scoped_gem
+  def latest
+    @latest ||= list(:remote)
   end
 
-  def execute(command)
-    if command.last =~ / :: /
-      gem = command.pop
-      command.push gem.split(' :: ').last
-    end
-
-    super
+  def current
+    list
   end
 
   private
-    def scoped_gem
-      resource[:root] + '/bin/gem'
+    def gem_name
+      resource[:gemname]
+    end
+
+    def gem(*args)
+      exe = resource[:rbenv] + '/bin/gem'
+      su('-', resource[:user], '-c', [exe, *args].join(' '))
+    end
+
+    def list(where = :local)
+      args = ['list', where == :remote ? '--remote' : '--local', "#{gem_name}$"]
+
+      gem(*args).lines.map do |line|
+        line =~ /^(?:\S+)\s+\((.+)\)/
+
+        ver = $1.split(/,\s*/)
+        ver.empty? ? nil : ver
+      end.first
     end
 end
