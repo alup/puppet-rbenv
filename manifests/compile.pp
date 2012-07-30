@@ -1,7 +1,7 @@
 # The following part is optional! It just compiles and installs the chosen
 # global ruby version to help on bootstrapping. To achieve this, it uses
 # "ruby-build" utility.
-define rbenv::compile( $user, $group, $home_dir, $ruby_version ) {
+define rbenv::compile($user, $group, $ruby_version) {
 
   # Set Timeout to disabled cause we need a lot of time to compile.
   # Use HOME variable and define PATH correctly.

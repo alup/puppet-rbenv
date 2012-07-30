@@ -1,4 +1,4 @@
-define rbenv::install($user, $group, $home_dir) {
+define rbenv::install($user, $group) {
 
   # STEP 1
   exec { "rbenv::install::${user}::checkout":

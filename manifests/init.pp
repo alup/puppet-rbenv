@@ -34,14 +34,12 @@ class rbenv ( $user, $group=$user, $home_dir="/home/${user}", $compile=true, $ve
   rbenv::install { "rbenv::install::${user}":
     user      => $user,
     group     => $group,
-    home_dir  => $home_dir,
   }
 
   if $compile {
     rbenv::compile { "rbenv::compile::${user}::${version}":
       user         => $user,
       group        => $group,
-      home_dir     => $home_dir,
       ruby_version => $version,
     }
   }
