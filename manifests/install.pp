@@ -11,7 +11,7 @@ define rbenv::install($user, $group, $home_dir) {
     creates => "${rbenv::paths::root}/${rbenv::paths::dest}",
     path    => ['/usr/bin', '/usr/sbin'],
     timeout => 100,
-    require => Package['git-core'],
+    require => Package['git'],
   }
 
   # STEP 2
