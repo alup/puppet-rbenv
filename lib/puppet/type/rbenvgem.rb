@@ -28,11 +28,7 @@ Puppet.newtype(:rbenvgem) do
     def insync?(current)
       requested = @should.first
 
-      # puts "current: #{current.inspect}"
-      # puts "reqd   : #{requested.inspect}"
-      # puts "latest : #{[provider.latest.inspect]}"
-
-      ret = case requested
+      case requested
       when :present, :installed
         current != :absent
       when :latest
@@ -42,10 +38,6 @@ Puppet.newtype(:rbenvgem) do
       else
         current == [requested]
       end
-
-      # puts "ret: #{ret}"
-
-      return ret
     end
   end
 

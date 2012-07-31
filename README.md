@@ -71,8 +71,9 @@ rbenv::gem { "unicorn":
 }
 ```
 
-Gems are handled using a Package provider inherited from puppet's
-`gem` one - so `absent` and `latest` work as expected.
+Gems are handled using a custom Package provider that handles gems,
+somewhat inspired by Puppet's Package one - thus `absent` and `latest`
+work as expected.
 
 ## License
 
