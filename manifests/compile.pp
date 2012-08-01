@@ -47,6 +47,19 @@ define rbenv::compile(
     }
   }
 
+  # Install bundler
+  #
+  gem {"rbenv::bundler ${user} ${ruby}":
+    gem    => 'bundler',
+    ensure => present,
+    user   => $user,
+    ruby   => $ruby,
+    home   => $home,
+    root   => $root,
+  }
+
+  # Set default, if requested
+  #
   if $default {
     file { "rbenv::global ${user}":
       path    => $global,
