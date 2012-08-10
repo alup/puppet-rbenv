@@ -1,7 +1,7 @@
 define rbenv::install(
   $user  = $title,
   $group = $user,
-  $home  = "/home/$user",
+  $home  = "/home/${user}",
   $root  = "${home}/.rbenv",
 ) {
 
