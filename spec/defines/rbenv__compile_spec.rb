@@ -1,21 +1,24 @@
 require 'spec_helper'
 
 describe 'rbenv::compile', :type => :define do
-  let(:title) { 'rbenv::compile::tester::1.9.3-p125' }
-  let(:params) { { :user => 'tester', :group => 'tester', :home_dir => '/home/tester', :ruby_version => '1.9.3-p125'} }
+  let(:user)         { 'tester' }
+  let(:ruby_version) { '1.9.3-p125' }
+  let(:title)        { "rbenv::compile::#{user}::#{ruby_version}" }
+  let(:params)       { {:user => user, :ruby => ruby_version} }
 
   it "installs ruby of the chosen version" do
-    should contain_exec("install ruby #{params[:user]} #{params[:ruby_version]}").
-      with_command("rbenv install #{params[:ruby_version]}")
+    # p subject.resource('Exec', 'rbenv::compile tester 1.9.3-p125')
+    should contain_exec("rbenv::compile #{user} #{ruby_version}").
+      with_command("rbenv install #{ruby_version}; touch /home/#{user}/.rbenv/.rehash")
   end
 
   it "issues a rehash command" do
-    should contain_exec("rehash-rbenv #{params[:user]}").
-      with_command("rbenv rehash")
+    should contain_exec("rbenv::rehash #{user}").
+      with_command("rbenv rehash; rm -f /home/#{user}/.rbenv/.rehash")
   end
 
-  it "sets the global ruby version for the specific user" do
-    should contain_exec("set-ruby_version #{params[:user]}").
-      with_command("rbenv global #{params[:ruby_version]}")
+  xit "sets the global ruby version for the specific user" do
+    should contain_file("rbenv::global #{user}").
+      with_content("#{ruby_version}\n")
   end
 end
