@@ -5,7 +5,7 @@ define rbenv::compile(
   $user,
   $ruby    = $title,
   $group   = $user,
-  $home    = "/home/$user",
+  $home    = "/home/${user}",
   $root    = "${home}/.rbenv",
   $default = false,
 ) {
