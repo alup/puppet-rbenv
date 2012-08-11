@@ -48,7 +48,7 @@ define rbenv::install(
   }
 
   exec { "rbenv::ruby-build ${user}":
-    command => "git clone git://github.com/sstephenson/ruby-build.git ${plugins}",
+    command => "git clone git://github.com/sstephenson/ruby-build.git ${plugins}/ruby-build",
     user    => $user,
     group   => $group,
     creates => "${plugins}/ruby-build",
