@@ -4,22 +4,17 @@ describe 'rbenv::dependencies' do
   let(:title) { 'rbenv::dependencies' }
 
   context 'Ubuntu' do
-    let(:facts) { { :operatingsystem => 'Ubuntu' } }
+    let(:facts) { {:osfamily => 'debian'} }
     it { should include_class('rbenv::dependencies::ubuntu') }
-  end
-
-  context 'Debian' do
-    let(:facts) { { :operatingsystem => 'Debian' } }
-    it { should include_class('rbenv::dependencies::ubuntu') }
-  end
-
-  context 'CentOS' do
-    let(:facts) { { :operatingsystem => 'CentOS' } }
-    it { should include_class('rbenv::dependencies::centos') }
   end
 
   context 'RedHat' do
-    let(:facts) { { :operatingsystem => 'RedHat' } }
+    let(:facts) { {:osfamily => 'redhat'} }
     it { should include_class('rbenv::dependencies::centos') }
+  end
+
+  context 'Suse' do
+    let(:facts) { {:osfamily => 'suse'} }
+    it { should include_class('rbenv::dependencies::suse') }
   end
 end
