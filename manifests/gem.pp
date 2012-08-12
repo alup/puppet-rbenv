@@ -22,6 +22,7 @@ define rbenv::gem(
     ensure  => $ensure,
     user    => $user,
     gemname => $gem,
-    rbenv   => "${root_path}/versions/${ruby}"
+    rbenv   => "${root_path}/versions/${ruby}",
+    require => Exec["rbenv::compile ${user} ${ruby}"],
   }
 }
