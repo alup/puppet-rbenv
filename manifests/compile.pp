@@ -3,11 +3,11 @@
 #
 define rbenv::compile(
   $user,
-  $ruby    = $title,
-  $group   = $user,
-  $home    = "/home/${user}",
-  $root    = "${home}/.rbenv",
-  $default = false,
+  $ruby        = $title,
+  $group       = $user,
+  $home        = "/home/${user}",
+  $root        = "${home}/.rbenv",
+  $set_default = false,
 ) {
 
   $bin       = "${root}/bin"
@@ -58,9 +58,9 @@ define rbenv::compile(
     root   => $root,
   }
 
-  # Set default, if requested
+  # Set default global ruby version for rbenv, if requested
   #
-  if $default {
+  if $set_default {
     file { "rbenv::global ${user}":
       path    => $global,
       content => "$ruby\n",
