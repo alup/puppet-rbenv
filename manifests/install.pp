@@ -1,23 +1,26 @@
 define rbenv::install(
   $user  = $title,
   $group = $user,
-  $home  = "/home/${user}",
-  $root  = "${home}/.rbenv",
+  $home  = "",
+  $root  = "",
 ) {
 
-  $rbenvrc = "${home}/.rbenvrc"
-  $bashrc  = "${home}/.bashrc"
-  $plugins = "${root}/plugins"
+  $home_path = $home ? { '' => "/home/${user}", default => $home }
+  $root_path = $root ? { '' => "${home_path}/.rbenv", default => $root }
+
+  $rbenvrc = "${home_path}/.rbenvrc"
+  $bashrc  = "${home_path}/.bashrc"
+  $plugins = "${root_path}/plugins"
 
   if ! defined( Class['rbenv-dependencies'] ) {
     require rbenv::dependencies
   }
 
   exec { "rbenv::checkout ${user}":
-    command => "git clone git://github.com/sstephenson/rbenv.git ${root}",
+    command => "git clone git://github.com/sstephenson/rbenv.git ${root_path}",
     user    => $user,
     group   => $group,
-    creates => $root,
+    creates => $root_path,
     path    => ['/usr/bin', '/usr/sbin'],
     timeout => 100,
     require => Package['git'],
