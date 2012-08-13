@@ -1,1 +1,0 @@
-rbenv::install { 'vagrant': }
