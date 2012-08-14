@@ -42,7 +42,7 @@ define rbenv::compile(
       ruby    => $ruby,
       home    => $home,
       root    => $root,
-      require => Exec["rbenv::plugin::ruby-build ${user}"],
+      require => Exec["rbenv::plugin::checkout ${user} ruby-build"],
       before  => Exec["rbenv::compile ${user} ${ruby}"]
     }
   }
@@ -58,7 +58,7 @@ define rbenv::compile(
     environment => [ "HOME=${home_path}" ],
     creates     => "${versions}/${ruby}",
     path        => $path,
-    require     => Exec["rbenv::plugin::ruby-build ${user}"],
+    require     => Exec["rbenv::plugin::checkout ${user} ruby-build"],
     before      => Exec["rbenv::rehash ${user}"],
   }
 
