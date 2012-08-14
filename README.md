@@ -55,7 +55,7 @@ rbenv::compile { "bar/1.8.7":
 `rbenv rehash` is performed each time a new ruby or a new gem is
 installed.
 
-You can use the `default` parameter to set an interpreter as the
+You can use the `set_default` parameter to set an interpreter as the
 default one for the given user. Please note that only one default
 is allowed, duplicate resources will be defined if you specify
 multiple default ruby version.
