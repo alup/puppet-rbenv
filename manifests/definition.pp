@@ -22,7 +22,8 @@ define rbenv::definition(
   } elsif $source =~ /http(s)?:/ {
     exec { "rbenv::definition-file ${user} ${ruby}":
       command => "wget ${source} -O ${destination}",
-      user    => $user,
+      creates => $destination,
+      user    => $user
     }
   }
 }

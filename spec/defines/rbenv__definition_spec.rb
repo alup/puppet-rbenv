@@ -22,7 +22,8 @@ describe 'rbenv::definition', :type => :define do
     let(:definition) { 'http://gist.com/ree' }
     it 'downloads file to the right path' do
       should contain_exec("rbenv::definition-file #{user} #{ruby_version}").with(
-        :command => "wget #{definition} -O #{target_path}"
+        :command => "wget #{definition} -O #{target_path}",
+        :creates => target_path
       )
     end
   end
@@ -31,7 +32,8 @@ describe 'rbenv::definition', :type => :define do
     let(:definition) { 'https://gist.com/ree' }
     it 'downloads file to the right path' do
       should contain_exec("rbenv::definition-file #{user} #{ruby_version}").with(
-        :command => "wget #{definition} -O #{target_path}"
+        :command => "wget #{definition} -O #{target_path}",
+        :creates => target_path
       )
     end
   end
