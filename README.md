@@ -60,6 +60,18 @@ default one for the given user. Please note that only one default
 is allowed, duplicate resources will be defined if you specify
 multiple default ruby version.
 
+You can also provide a custom build definition to ruby-build by
+specifying a `source` that can either be a `puppet:` source or
+a file to be downloaded using `wget`:
+
+```
+rbenv::compile { "patched-ree":
+  user   => "someuser",
+  home   => "/project",
+  source => "puppet://path-to-definition"
+}
+```
+
 ## Gem installation
 
 You can install and keep gems updated for a specific ruby interpreter:
