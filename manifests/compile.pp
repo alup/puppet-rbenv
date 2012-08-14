@@ -7,6 +7,7 @@ define rbenv::compile(
   $group       = $user,
   $home        = "/home/${user}",
   $root        = "${home}/.rbenv",
+  $source      = '',
   $set_default = false,
 ) {
 
@@ -18,6 +19,18 @@ define rbenv::compile(
 
   if ! defined( Class['rbenv-dependencies'] ) {
     require rbenv::dependencies
+  }
+
+  if $source {
+    $destination = "${root}/plugins/ruby-build/share/ruby-build/${ruby}"
+    file { "rbenv::definition ${user} ${ruby}":
+      ensure  => file,
+      source  => $source,
+      group   => $group,
+      path    => $destination,
+      require => Exec["rbenv::ruby-build ${user}"],
+      before  => Exec["rbenv::compile ${user}"]
+    }
   }
 
   # Set Timeout to disabled cause we need a lot of time to compile.
