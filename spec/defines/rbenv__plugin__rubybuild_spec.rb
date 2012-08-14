@@ -2,8 +2,7 @@ require 'spec_helper'
 
 describe 'rbenv::plugin::rubybuild', :type => :define do
   let(:user)      { 'tester' }
-  let(:title)     { "rbenv::plugin::ruby-build #{user}" }
-  let(:params)    { {:user => user} }
+  let(:title)     { user }
 
   it {
     should contain_rbenv__plugin("rbenv::plugin::rubybuild::#{user}").with(
