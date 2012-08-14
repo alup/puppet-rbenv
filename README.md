@@ -87,6 +87,17 @@ Gems are handled using a custom Package provider that handles gems,
 somewhat inspired by Puppet's Package one - thus `absent` and `latest`
 work as expected.
 
+## rbenv plugins
+
+To add a plugin to a rbenv installation, you use `rbenv::plugin` as follows:
+
+```
+rbenv::plugin { "rbenv-vars":
+  user   => "someuser",
+  source => "git://github.com/sstephenson/rbenv-vars.git"
+}
+```
+
 ## License
 
 MIT License.
