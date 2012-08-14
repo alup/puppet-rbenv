@@ -26,11 +26,11 @@ define rbenv::compile(
   }
 
   if ! defined( Exec["rbenv::plugin::checkout ${user} ruby-build"] ) {
-    rbenv::plugin { "rbenv::plugin::ruby-build ${user}":
+    rbenv::plugin::rubybuild { "rbenv::rubybuild::${user}":
       user        => $user,
-      source      => 'git://github.com/sstephenson/ruby-build.git',
-      plugin_name => 'ruby-build',
       group       => $group,
+      home        => $home,
+      root        => $root
     }
   }
 
