@@ -25,6 +25,15 @@ define rbenv::compile(
     require rbenv::dependencies
   }
 
+  if ! defined( Exec["rbenv::plugin::checkout ${user} ruby-build"] ) {
+    rbenv::plugin { "rbenv::plugin::ruby-build ${user}":
+      user        => $user,
+      source      => 'git://github.com/sstephenson/ruby-build.git',
+      plugin_name => 'ruby-build',
+      group       => $group,
+    }
+  }
+
   if $source {
     rbenv::definition { "rbenv::definition ${user} ${ruby}":
       user    => $user,
@@ -33,7 +42,7 @@ define rbenv::compile(
       ruby    => $ruby,
       home    => $home,
       root    => $root,
-      require => Exec["rbenv::ruby-build ${user}"],
+      require => Exec["rbenv::plugin::ruby-build ${user}"],
       before  => Exec["rbenv::compile ${user} ${ruby}"]
     }
   }
@@ -49,7 +58,7 @@ define rbenv::compile(
     environment => [ "HOME=${home_path}" ],
     creates     => "${versions}/${ruby}",
     path        => $path,
-    require     => Exec["rbenv::ruby-build ${user}"],
+    require     => Exec["rbenv::plugin::ruby-build ${user}"],
     before      => Exec["rbenv::rehash ${user}"],
   }
 
@@ -86,5 +95,4 @@ define rbenv::compile(
       group   => $group,
     }
   }
-
 }

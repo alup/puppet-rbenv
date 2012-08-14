@@ -50,15 +50,4 @@ define rbenv::install(
     group   => $group,
     require => Exec["rbenv::checkout ${user}"],
   }
-
-  exec { "rbenv::ruby-build ${user}":
-    command => "git clone git://github.com/sstephenson/ruby-build.git ${plugins}/ruby-build",
-    user    => $user,
-    group   => $group,
-    creates => "${plugins}/ruby-build",
-    path    => ['/usr/bin', '/usr/sbin'],
-    timeout => 100,
-    require => File["rbenv::plugins ${user}"],
-  }
-
 }
