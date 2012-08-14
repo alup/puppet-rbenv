@@ -30,7 +30,7 @@ define rbenv::compile(
       home    => $home,
       root    => $root,
       require => Exec["rbenv::ruby-build ${user}"],
-      before  => Exec["rbenv::compile ${user}"]
+      before  => Exec["rbenv::compile ${user} ${ruby}"]
     }
   }
 
