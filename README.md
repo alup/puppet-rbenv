@@ -92,9 +92,19 @@ work as expected.
 To add a plugin to a rbenv installation, you use `rbenv::plugin` as follows:
 
 ```
-rbenv::plugin { "rbenv-vars":
+rbenv::plugin { "my-plugin":
   user   => "someuser",
-  source => "git://github.com/sstephenson/rbenv-vars.git"
+  source => "git://github.com/user/my-plugin.git"
+}
+```
+
+There's also a built-in resource to add [rbenv-vars](https://github.com/sstephenson/rbenv-vars)
+for a user:
+
+```
+rbenv::plugin::rbenvvars { "someuser":
+  # Optional:
+  # source => "git://path-to-your/custom/rbenv-vars.git"
 }
 ```
 
