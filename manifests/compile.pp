@@ -25,12 +25,17 @@ define rbenv::compile(
     require rbenv::dependencies
   }
 
-  if ! defined( Exec["rbenv::plugin::checkout ${user} ruby-build"] ) {
+  # If no ruby-build has been specified and the default resource hasn't been
+  # parsed
+  $custom_or_default = Rbenv::Plugin["rbenv::plugin::rubybuild::${user}"]
+  $default           = Rbenv::Plugin::Rubybuild["rbenv::rubybuild::${user}"]
+  if ! defined($custom_or_default) and ! defined($default) {
+    debug("No ruby-build found for ${user}, going to add the default one")
     rbenv::plugin::rubybuild { "rbenv::rubybuild::${user}":
-      user        => $user,
-      group       => $group,
-      home        => $home,
-      root        => $root
+      user   => $user,
+      group  => $group,
+      home   => $home,
+      root   => $root
     }
   }
 
@@ -42,7 +47,7 @@ define rbenv::compile(
       ruby    => $ruby,
       home    => $home,
       root    => $root,
-      require => Exec["rbenv::plugin::checkout ${user} ruby-build"],
+      require => Rbenv::Plugin["rbenv::plugin::rubybuild::${user}"],
       before  => Exec["rbenv::compile ${user} ${ruby}"]
     }
   }
@@ -58,7 +63,7 @@ define rbenv::compile(
     environment => [ "HOME=${home_path}" ],
     creates     => "${versions}/${ruby}",
     path        => $path,
-    require     => Exec["rbenv::plugin::checkout ${user} ruby-build"],
+    require     => Rbenv::Plugin["rbenv::plugin::rubybuild::${user}"],
     before      => Exec["rbenv::rehash ${user}"],
   }
 

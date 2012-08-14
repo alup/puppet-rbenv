@@ -11,7 +11,6 @@ define rbenv::install(
 
   $rbenvrc = "${home_path}/.rbenvrc"
   $bashrc  = "${home_path}/.bashrc"
-  $plugins = "${root_path}/plugins"
 
   if ! defined( Class['rbenv-dependencies'] ) {
     require rbenv::dependencies
@@ -41,13 +40,5 @@ define rbenv::install(
     unless  => "grep -q rbenvrc ${bashrc}",
     path    => ['/bin', '/usr/bin', '/usr/sbin'],
     require => File["rbenv::rbenvrc ${user}"],
-  }
-
-  file { "rbenv::plugins ${user}":
-    ensure  => directory,
-    path    => $plugins,
-    owner   => $user,
-    group   => $group,
-    require => Exec["rbenv::checkout ${user}"],
   }
 }
