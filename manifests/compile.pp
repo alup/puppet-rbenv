@@ -22,24 +22,15 @@ define rbenv::compile(
   }
 
   if $source {
-    $destination = "${root}/plugins/ruby-build/share/ruby-build/${ruby}"
-
-    if $source =~ /^puppet:/ {
-      file { "rbenv::definition ${user} ${ruby}":
-        ensure  => file,
-        source  => $source,
-        group   => $group,
-        path    => $destination,
-        require => Exec["rbenv::ruby-build ${user}"],
-        before  => Exec["rbenv::compile ${user}"]
-      }
-    } elsif $source =~ /http(s)?:/ {
-      exec { "rbenv::definition ${user} ${ruby}":
-        command => "wget ${source} -O ${destination}",
-        user    => $user,
-        require => Exec["rbenv::ruby-build ${user}"],
-        before  => Exec["rbenv::compile ${user}"]
-      }
+    rbenv::definition { "rbenv::definition ${user} ${ruby}":
+      user    => $user,
+      group   => $group,
+      source  => $source,
+      ruby    => $ruby,
+      home    => $home,
+      root    => $root,
+      require => Exec["rbenv::ruby-build ${user}"],
+      before  => Exec["rbenv::compile ${user}"]
     }
   }
 
