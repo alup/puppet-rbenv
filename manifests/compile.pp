@@ -23,13 +23,23 @@ define rbenv::compile(
 
   if $source {
     $destination = "${root}/plugins/ruby-build/share/ruby-build/${ruby}"
-    file { "rbenv::definition ${user} ${ruby}":
-      ensure  => file,
-      source  => $source,
-      group   => $group,
-      path    => $destination,
-      require => Exec["rbenv::ruby-build ${user}"],
-      before  => Exec["rbenv::compile ${user}"]
+
+    if $source =~ /^puppet:/ {
+      file { "rbenv::definition ${user} ${ruby}":
+        ensure  => file,
+        source  => $source,
+        group   => $group,
+        path    => $destination,
+        require => Exec["rbenv::ruby-build ${user}"],
+        before  => Exec["rbenv::compile ${user}"]
+      }
+    } elsif $source =~ /http(s)?:/ {
+      exec { "rbenv::definition ${user} ${ruby}":
+        command => "wget ${source} -O ${destination}",
+        user    => $user,
+        require => Exec["rbenv::ruby-build ${user}"],
+        before  => Exec["rbenv::compile ${user}"]
+      }
     }
   }
 
