@@ -50,8 +50,8 @@ define rbenv::compile(
   # Install bundler
   #
   gem {"rbenv::bundler ${user} ${ruby}":
-    gem    => 'bundler',
     ensure => present,
+    gem    => 'bundler',
     user   => $user,
     ruby   => $ruby,
     home   => $home,

@@ -1,9 +1,9 @@
 define rbenv::bundle(
-  home,
-  user,
-  group   = $user,
-  content = '',
-  gems    = '',
+  $home,
+  $user,
+  $group   = $user,
+  $content = '',
+  $gems    = '',
 ) {
 
   if ( $gems ) {
@@ -11,7 +11,7 @@ define rbenv::bundle(
   } elsif ( $content ) {
     $gemfile = $content
   } else {
-    fail("bundle requires either a gem list or a Gemfile")
+    fail('bundle requires either a gem list or a Gemfile')
   }
 
   file {"${user}/Gemfile":
