@@ -5,8 +5,8 @@ define rbenv::gem(
   $user,
   $ruby,
   $gem    = $title,
-  $home   = "",
-  $root   = "",
+  $home   = '',
+  $root   = '',
   $ensure = present,
 ) {
 

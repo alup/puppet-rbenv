@@ -5,8 +5,8 @@ define rbenv::compile(
   $user,
   $ruby        = $title,
   $group       = $user,
-  $home        = "",
-  $root        = "",
+  $home        = '',
+  $root        = '',
   $set_default = false,
 ) {
 
