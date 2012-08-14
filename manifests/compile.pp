@@ -7,6 +7,7 @@ define rbenv::compile(
   $group       = $user,
   $home        = '',
   $root        = '',
+  $source      = '',
   $set_default = false,
 ) {
 
@@ -22,6 +23,19 @@ define rbenv::compile(
 
   if ! defined( Class['rbenv-dependencies'] ) {
     require rbenv::dependencies
+  }
+
+  if $source {
+    rbenv::definition { "rbenv::definition ${user} ${ruby}":
+      user    => $user,
+      group   => $group,
+      source  => $source,
+      ruby    => $ruby,
+      home    => $home,
+      root    => $root,
+      require => Exec["rbenv::ruby-build ${user}"],
+      before  => Exec["rbenv::compile ${user} ${ruby}"]
+    }
   }
 
   # Set Timeout to disabled cause we need a lot of time to compile.
