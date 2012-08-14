@@ -103,8 +103,7 @@ to compile rubies, if you want to use a different repository, it you can specify
 the resource on a separate manifest:*
 
 ```
-rbenv::plugin { "ruby-build":
-  user   => "someuser",
+rbenv::plugin::rubybuild { "someuser":
   source => "git://path-to-your/git/repo"
 }
 ```
