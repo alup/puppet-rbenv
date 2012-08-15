@@ -55,7 +55,7 @@ rbenv::compile { "bar/1.8.7":
 `rbenv rehash` is performed each time a new ruby or a new gem is
 installed.
 
-You can use the `default` parameter to set an interpreter as the
+You can use the `set_default` parameter to set an interpreter as the
 default one for the given user. Please note that only one default
 is allowed, duplicate resources will be defined if you specify
 multiple default ruby version.
@@ -86,6 +86,37 @@ rbenv::gem { "unicorn":
 Gems are handled using a custom Package provider that handles gems,
 somewhat inspired by Puppet's Package one - thus `absent` and `latest`
 work as expected.
+
+## rbenv plugins
+
+To add a plugin to a rbenv installation, you use `rbenv::plugin` as follows:
+
+```
+rbenv::plugin { "my-plugin":
+  user   => "someuser",
+  source => "git://github.com/user/my-plugin.git"
+}
+```
+
+There's also a built-in resource to add [rbenv-vars](https://github.com/sstephenson/rbenv-vars)
+for a user:
+
+```
+rbenv::plugin::rbenvvars { "someuser":
+  # Optional:
+  # source => "git://path-to-your/custom/rbenv-vars.git"
+}
+```
+
+*NOTICE: `rbenv::install` automatically requires [ruby-build](https://github.com/sstephenson/ruby-build)
+to compile rubies, if you want to use a different repository, it you can specify
+the resource on a separate manifest:*
+
+```
+rbenv::plugin::rubybuild { "someuser":
+  source => "git://path-to-your/git/repo"
+}
+```
 
 ## License
 

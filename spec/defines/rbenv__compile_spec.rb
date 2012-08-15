@@ -21,4 +21,8 @@ describe 'rbenv::compile', :type => :define do
     should contain_file("rbenv::global #{user}").
       with_content("#{ruby_version}\n")
   end
+
+  it "installs ruby-build plugin from official repository" do
+    should contain_rbenv__plugin__rubybuild("rbenv::rubybuild::#{user}")
+  end
 end

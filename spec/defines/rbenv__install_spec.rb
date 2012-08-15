@@ -16,12 +16,4 @@ describe 'rbenv::install', :type => :define do
         with_command("echo 'source /home/#{user}/.rbenvrc' >> /home/#{user}/.bashrc")
     end
   end
-
-  context 'install ruby-build' do
-    it "clones ruby-build" do
-      should contain_exec("rbenv::ruby-build #{user}").
-        with_command("git clone git://github.com/sstephenson/ruby-build.git /home/#{user}/.rbenv/plugins/ruby-build")
-    end
-  end
-
 end

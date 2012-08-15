@@ -18,12 +18,14 @@ define rbenv::definition(
       source  => $source,
       group   => $group,
       path    => $destination,
+      require => Exec["rbenv::plugin::checkout ${user} ruby-build"],
     }
   } elsif $source =~ /http(s)?:/ {
     exec { "rbenv::definition-file ${user} ${ruby}":
       command => "wget ${source} -O ${destination}",
       creates => $destination,
-      user    => $user
+      user    => $user,
+      require => Exec["rbenv::plugin::checkout ${user} ruby-build"],
     }
   }
 }
