@@ -55,10 +55,10 @@ rbenv::compile { "bar/1.8.7":
 `rbenv rehash` is performed each time a new ruby or a new gem is
 installed.
 
-You can use the `set_default` parameter to set an interpreter as the
-default one for the given user. Please note that only one default
+You can use the `global => true` parameter to set an interpreter as the
+default (`rbenv global`) one for the given user. Please note that only one global
 is allowed, duplicate resources will be defined if you specify
-multiple default ruby version.
+multiple global ruby version.
 
 You can also provide a custom build definition to ruby-build by
 specifying a `source` that can either be a `puppet:` source or

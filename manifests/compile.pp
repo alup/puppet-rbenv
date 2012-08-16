@@ -3,23 +3,23 @@
 #
 define rbenv::compile(
   $user,
-  $ruby        = $title,
-  $group       = $user,
-  $home        = '',
-  $root        = '',
-  $source      = '',
-  $set_default = false,
+  $ruby   = $title,
+  $group  = $user,
+  $home   = '',
+  $root   = '',
+  $source = '',
+  $global = false,
 ) {
 
   # Workaround http://projects.puppetlabs.com/issues/9848
   $home_path = $home ? { '' => "/home/${user}", default => $home }
   $root_path = $root ? { '' => "${home_path}/.rbenv", default => $root }
 
-  $bin       = "${root_path}/bin"
-  $shims     = "${root_path}/shims"
-  $versions  = "${root_path}/versions"
-  $global    = "${root_path}/version"
-  $path      = [ $shims, $bin, '/bin', '/usr/bin' ]
+  $bin         = "${root_path}/bin"
+  $shims       = "${root_path}/shims"
+  $versions    = "${root_path}/versions"
+  $global_path = "${root_path}/version"
+  $path        = [ $shims, $bin, '/bin', '/usr/bin' ]
 
   if ! defined( Class['rbenv-dependencies'] ) {
     require rbenv::dependencies
@@ -92,9 +92,9 @@ define rbenv::compile(
 
   # Set default global ruby version for rbenv, if requested
   #
-  if $set_default {
+  if $global {
     file { "rbenv::global ${user}":
-      path    => $global,
+      path    => $global_path,
       content => "$ruby\n",
       owner   => $user,
       group   => $group,

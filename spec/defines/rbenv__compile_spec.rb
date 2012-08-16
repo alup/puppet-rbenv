@@ -5,7 +5,7 @@ describe 'rbenv::compile', :type => :define do
   let(:ruby_version) { '1.9.3-p125' }
   let(:title)        { "rbenv::compile::#{user}::#{ruby_version}" }
   let(:dot_rbenv)    { "/home/#{user}/.rbenv" }
-  let(:params)       { {:user => user, :ruby => ruby_version, :set_default => true} }
+  let(:params)       { {:user => user, :ruby => ruby_version, :global => true} }
 
   it "installs ruby of the chosen version" do
     should contain_exec("rbenv::compile #{user} #{ruby_version}").
