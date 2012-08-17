@@ -1,7 +1,7 @@
 provider_path = File.expand_path('../../provider/rbenvgem', __FILE__)
 require provider_path # Do not EVER forget the require when developing puppet types. -vjt
 
-Puppet.newtype(:rbenvgem) do
+Puppet::Type.newtype(:rbenvgem) do
   @doc = "An RBenv gem"
 
   ensurable do
