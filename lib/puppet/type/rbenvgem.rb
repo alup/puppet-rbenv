@@ -56,6 +56,3 @@ Puppet.newtype(:rbenvgem) do
   end
 
 end
-
-provider_path = File.expand_path('../../provider/rbenvgem', __FILE__)
-require provider_path # Do not EVER forget the require when developing puppet types. -vjt
