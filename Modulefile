@@ -1,5 +1,5 @@
 name    'alup-rbenv'
-version '0.3.1'
+version '1.0.0'
 author 'alup'
 license 'MIT'
 summary 'rbenv Ruby Version Manager module'
