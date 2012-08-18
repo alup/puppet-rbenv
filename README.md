@@ -1,5 +1,7 @@
 # Puppet-Rbenv
 
+[![Build Status](https://secure.travis-ci.org/alup/puppet-rbenv.png?branch=master)](http://travis-ci.org/alup/puppet-rbenv)
+
 ## About
 
 This project provides manifests for the installation of
