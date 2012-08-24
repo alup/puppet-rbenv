@@ -25,4 +25,9 @@ describe 'rbenv::compile', :type => :define do
   it "installs ruby-build plugin from official repository" do
     should contain_rbenv__plugin__rubybuild("rbenv::rubybuild::#{user}")
   end
+
+  it "installs bundler" do
+    should contain_rbenv__gem("rbenv::bundler #{user} #{ruby_version}").
+      with_ensure('present')
+  end
 end
