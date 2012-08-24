@@ -4,9 +4,15 @@
 
 ## About
 
-This project provides manifests for the installation of
+This project provides powerful manifests for the installation of
 [rbenv](https://github.com/sstephenson/rbenv) (Ruby Version Management).
+In a nutshell, it supports the following conveniences:
 
+* Defined resources for the installation of rbenvs for one or more users, shared or standalone.
+* Resources for the compilation of ruby interpreters (one or many, custom or predefined ruby build definitions), under specific rbenvs, users.
+* Tools for the installation of arbitrary gems under specific rbenvs.
+* Infrastructure to support rbenv plugins. We have already included [ruby-build](https://github.com/sstephenson/ruby-build) and [rbenv-vars](https://github.com/sstephenson/rbenv-vars) plugins.
+* Resource for handling `bundler`.
 
 ## Rbenv installation
 
@@ -111,7 +117,7 @@ rbenv::plugin::rbenvvars { "someuser":
 ```
 
 *NOTICE: `rbenv::install` automatically requires [ruby-build](https://github.com/sstephenson/ruby-build)
-to compile rubies, if you want to use a different repository, it you can specify
+to compile rubies, if you want to use a different repository, you can specify
 the resource on a separate manifest:*
 
 ```
@@ -120,9 +126,16 @@ rbenv::plugin::rubybuild { "someuser":
 }
 ```
 
+## Supported Platforms
+
+* CentOS
+* Debian
+* RHEL
+* SuSE
+* Ubuntu
+
 ## License
 
 MIT License.
 
-Copyright 2012 Andreas Loupasakis
-Copyright 2012 Marcello Barnaba <vjt@openssl.it>
+Copyright 2012 Andreas Loupasakis, Marcello Barnaba <vjt@openssl.it>
