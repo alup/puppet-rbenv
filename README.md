@@ -38,7 +38,7 @@ that must be an absolute path.
 To compile a ruby interpreter, you use `rbenv::compile` as follows:
 
 ```
-rbenv::compile { "1.9.3-p370":
+rbenv::compile { "1.9.3-p194":
   user => "someuser",
   home => "/project",
 }
@@ -87,7 +87,7 @@ You can install and keep gems updated for a specific ruby interpreter:
 ```
 rbenv::gem { "unicorn":
   user => "foobarbaz",
-  ruby => "1.9.3-p370",
+  ruby => "1.9.3-p194",
 }
 ```
 
