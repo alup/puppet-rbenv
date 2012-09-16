@@ -23,6 +23,7 @@ define rbenv::install(
     creates => $root_path,
     path    => ['/usr/bin', '/usr/sbin'],
     timeout => 100,
+    cwd => $home_path,
     require => Package['git'],
   }
 
@@ -31,6 +32,7 @@ define rbenv::install(
     owner   => $user,
     group   => $group,
     content => template('rbenv/dot.rbenvrc.erb'),
+    require => Exec["rbenv::checkout ${user}"],
   }
 
   exec { "rbenv::bashrc ${user}":
