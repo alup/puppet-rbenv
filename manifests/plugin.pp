@@ -34,6 +34,7 @@ define rbenv::plugin(
     creates => $destination,
     path    => ['/usr/bin', '/usr/sbin'],
     timeout => $timeout,
+    cwd => $home_path,
     require => File["rbenv::plugins ${user}"],
   }
 }
