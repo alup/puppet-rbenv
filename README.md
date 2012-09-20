@@ -1,6 +1,7 @@
 # Puppet-Rbenv
 
 [![Build Status](https://secure.travis-ci.org/alup/puppet-rbenv.png?branch=master)](http://travis-ci.org/alup/puppet-rbenv)
+[![endorse](http://api.coderwall.com/alup/endorsecount.png)](http://coderwall.com/alup)
 
 ## About
 
