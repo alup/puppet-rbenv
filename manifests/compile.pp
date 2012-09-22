@@ -86,8 +86,6 @@ define rbenv::compile(
     gem    => 'bundler',
     user   => $user,
     ruby   => $ruby,
-    home   => $home_path,
-    root   => $root_path,
   }
 
   # Set default global ruby version for rbenv, if requested
