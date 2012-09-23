@@ -47,8 +47,8 @@ Puppet::Type.newtype(:rbenvgem) do
     desc 'The Gem name'
   end
 
-  newparam(:rbenv) do
-    desc 'The rbenv root'
+  newparam(:ruby) do
+    desc 'The ruby interpreter'
   end
 
   newparam(:user) do
