@@ -81,11 +81,10 @@ define rbenv::compile(
 
   # Install bundler
   #
-  gem {"rbenv::bundler ${user} ${ruby}":
-    ensure => present,
-    gem    => 'bundler',
+  rbenv::gem {"rbenv::bundler ${user} ${ruby}":
     user   => $user,
     ruby   => $ruby,
+    gem    => 'bundler',
     home   => $home_path,
     root   => $root_path,
   }
