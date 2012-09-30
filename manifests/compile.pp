@@ -21,7 +21,7 @@ define rbenv::compile(
   $global_path = "${root_path}/version"
   $path        = [ $shims, $bin, '/bin', '/usr/bin' ]
 
-  if ! defined( Class['rbenv-dependencies'] ) {
+  if ! defined( Class['rbenv::dependencies'] ) {
     require rbenv::dependencies
   }
 

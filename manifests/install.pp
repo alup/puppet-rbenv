@@ -12,7 +12,7 @@ define rbenv::install(
   $rbenvrc = "${home_path}/.rbenvrc"
   $bashrc  = "${home_path}/.bashrc"
 
-  if ! defined( Class['rbenv-dependencies'] ) {
+  if ! defined( Class['rbenv::dependencies'] ) {
     require rbenv::dependencies
   }
 
