@@ -2,7 +2,7 @@ define rbenv::install(
   $user  = $title,
   $group = $user,
   $home  = '',
-  $root  = '',
+  $root  = ''
 ) {
 
   # Workaround http://projects.puppetlabs.com/issues/9848

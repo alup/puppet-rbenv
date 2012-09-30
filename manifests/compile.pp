@@ -8,7 +8,7 @@ define rbenv::compile(
   $home   = '',
   $root   = '',
   $source = '',
-  $global = false,
+  $global = false
 ) {
 
   # Workaround http://projects.puppetlabs.com/issues/9848

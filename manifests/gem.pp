@@ -4,8 +4,8 @@
 define rbenv::gem(
   $user,
   $ruby,
-  $gem    = $title,  
-  $ensure = present,
+  $gem    = $title,
+  $ensure = present
 ) {
 
   if ! defined( Exec["rbenv::compile ${user} ${ruby}"] ) {

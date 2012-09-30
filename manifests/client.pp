@@ -3,7 +3,7 @@ define rbenv::client(
   $home,
   $ruby,
   $owner,
-  $source,
+  $source
 ) {
   if ! defined(Exec["rbenv::compile ${owner} ${ruby}"]) {
     fail("Ruby version ${ruby} is not compiled for ${owner}")

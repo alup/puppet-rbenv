@@ -3,7 +3,7 @@ define rbenv::bundle(
   $user,
   $group   = $user,
   $content = '',
-  $gems    = '',
+  $gems    = ''
 ) {
 
   if ( $gems ) {
