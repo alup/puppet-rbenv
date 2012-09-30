@@ -40,6 +40,9 @@ Puppet::Type.type(:rbenvgem).provide :default do
       gem(*args).lines.map do |line|
         line =~ /^(?:\S+)\s+\((.+)\)/
 
+        return nil unless $1
+
+        # Fetch the version number
         ver = $1.split(/,\s*/)
         ver.empty? ? nil : ver
       end.first
