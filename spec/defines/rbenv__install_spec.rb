@@ -11,9 +11,9 @@ describe 'rbenv::install', :type => :define do
         with_command("git clone git://github.com/sstephenson/rbenv.git /home/#{user}/.rbenv")
     end
 
-    it "appends in .bashrc, a command to include .rbenv/bin folder in PATH env variable" do
-      should contain_exec("rbenv::bashrc #{user}").
-        with_command("echo 'source /home/#{user}/.rbenvrc' >> /home/#{user}/.bashrc")
+    it "appends in a rc file, a command to include .rbenv/bin folder in PATH env variable" do
+      should contain_exec("rbenv::shrc #{user}").
+        with_command("echo 'source /home/#{user}/.rbenvrc' >> /home/#{user}/.profile")
     end
   end
 end

@@ -2,7 +2,8 @@ define rbenv::install(
   $user  = $title,
   $group = $user,
   $home  = '',
-  $root  = ''
+  $root  = '',
+  $rc    = ".profile"
 ) {
 
   # Workaround http://projects.puppetlabs.com/issues/9848
@@ -10,7 +11,7 @@ define rbenv::install(
   $root_path = $root ? { '' => "${home_path}/.rbenv", default => $root }
 
   $rbenvrc = "${home_path}/.rbenvrc"
-  $bashrc  = "${home_path}/.bashrc"
+  $shrc  = "${home_path}/${rc}"
 
   if ! defined( Class['rbenv::dependencies'] ) {
     require rbenv::dependencies
@@ -35,11 +36,11 @@ define rbenv::install(
     require => Exec["rbenv::checkout ${user}"],
   }
 
-  exec { "rbenv::bashrc ${user}":
-    command => "echo 'source ${rbenvrc}' >> ${bashrc}",
+  exec { "rbenv::shrc ${user}":
+    command => "echo 'source ${rbenvrc}' >> ${shrc}",
     user    => $user,
     group   => $group,
-    unless  => "grep -q rbenvrc ${bashrc}",
+    unless  => "grep -q rbenvrc ${shrc}",
     path    => ['/bin', '/usr/bin', '/usr/sbin'],
     require => File["rbenv::rbenvrc ${user}"],
   }

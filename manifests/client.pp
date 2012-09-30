@@ -3,7 +3,8 @@ define rbenv::client(
   $home,
   $ruby,
   $owner,
-  $source
+  $source,
+  $rc = ".profile"
 ) {
   if ! defined(Exec["rbenv::compile ${owner} ${ruby}"]) {
     fail("Ruby version ${ruby} is not compiled for ${owner}")
@@ -15,10 +16,10 @@ define rbenv::client(
     target => "${source}/.rbenv",
   }
 
-  file {"${user}/.bashrc":
+  file {"${user}/${rc}":
     ensure => link,
-    path   => "${home}/.bashrc",
-    target => "${source}/.bashrc",
+    path   => "${home}/${rc}",
+    target => "${source}/${rc}",
   }
 
   file {"${user}/.gemrc":
