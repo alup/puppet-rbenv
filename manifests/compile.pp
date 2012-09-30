@@ -55,7 +55,7 @@ define rbenv::compile(
   # Set Timeout to disabled cause we need a lot of time to compile.
   # Use HOME variable and define PATH correctly.
   exec { "rbenv::compile ${user} ${ruby}":
-    command     => "rbenv install ${ruby}; touch ${root_path}/.rehash",
+    command     => "rbenv install ${ruby} && touch ${root_path}/.rehash",
     timeout     => 0,
     user        => $user,
     group       => $group,
@@ -69,7 +69,7 @@ define rbenv::compile(
 
   if ! defined( Exec["rbenv::rehash ${user}"] ) {
     exec { "rbenv::rehash ${user}":
-      command     => "rbenv rehash; rm -f ${root_path}/.rehash",
+      command     => "rbenv rehash && rm -f ${root_path}/.rehash",
       user        => $user,
       group       => $group,
       cwd         => $home_path,
