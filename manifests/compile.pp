@@ -64,19 +64,17 @@ define rbenv::compile(
     creates     => "${versions}/${ruby}",
     path        => $path,
     require     => Rbenv::Plugin["rbenv::plugin::rubybuild::${user}"],
-    before      => Exec["rbenv::rehash ${user}"],
+    before      => Exec["rbenv::rehash ${user} ${ruby}"],
   }
 
-  if ! defined( Exec["rbenv::rehash ${user}"] ) {
-    exec { "rbenv::rehash ${user}":
-      command     => "rbenv rehash && rm -f ${root_path}/.rehash",
-      user        => $user,
-      group       => $group,
-      cwd         => $home_path,
-      onlyif      => "[ -e '${root_path}/.rehash' ]",
-      environment => [ "HOME=${home_path}" ],
-      path        => $path,
-    }
+  exec { "rbenv::rehash ${user} ${ruby}":
+    command     => "rbenv rehash && rm -f ${root_path}/.rehash",
+    user        => $user,
+    group       => $group,
+    cwd         => $home_path,
+    onlyif      => "[ -e '${root_path}/.rehash' ]",
+    environment => [ "HOME=${home_path}" ],
+    path        => $path,
   }
 
   # Install bundler
