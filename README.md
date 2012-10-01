@@ -127,6 +127,28 @@ rbenv::plugin::rubybuild { "someuser":
 }
 ```
 
+## Usage with Vagrant
+
+A simple way to test this module is by using the
+[Vagrant](http://http://vagrantup.com/) library.
+
+An example of a Vagrantfile:
+
+```
+Vagrant::Config.run do |config|
+   config.vm.box = "lucid32"
+   config.vm.provision :puppet, :facter => { "osfamily" => "debian" }, :module_path => "modules" do |puppet|
+     puppet.manifests_path = "manifests"
+     puppet.manifest_file  = "base.pp"
+     puppet.options        = %w[ --libdir=\\$modulepath/rbenv/lib ]
+   end
+end
+```
+
+The `--libdir=\\$modulepath/rbenv/lib` argument is important to make
+puppet aware of the rbenvgem custom provider and type.
+
+
 ## Supported Platforms
 
 * CentOS
