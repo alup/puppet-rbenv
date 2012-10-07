@@ -127,6 +127,15 @@ rbenv::plugin::rubybuild { "someuser":
 }
 ```
 
+## Install module from puppet forge
+
+You can install the latest release of this module by using the following
+command:
+
+```
+puppet module install alup-rbenv
+```
+
 ## Usage with Vagrant
 
 A simple way to test this module is by using the
