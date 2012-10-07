@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.1.0
+
+- Use .profile as the default rc file and let the user override it.
+  (This choice is preferred than bashrc because login shells do not read .bashrc file.)
+- Fix the usage of ruby interpreter during gem execution environment in
+  rbenvgem provider.
+- Use rbenv::gem to install bundler inside proper ruby environment.
+- Fix class name for rbenv dependencies.
+
 ## 1.0.0
 
 - Support for installation of rbenv plugins (Special thanks to @fgrehm - Fabio
