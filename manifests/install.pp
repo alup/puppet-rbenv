@@ -24,7 +24,7 @@ define rbenv::install(
     creates => $root_path,
     path    => ['/usr/bin', '/usr/sbin'],
     timeout => 100,
-    cwd => $home_path,
+    cwd     => $home_path,
     require => Package['git'],
   }
 
@@ -37,10 +37,10 @@ define rbenv::install(
   }
 
   exec { "rbenv::shrc ${user}":
-    command => "echo 'source ${rbenvrc}' >> ${shrc}",
+    command => "echo 'source ${rbenvrc} # Added by Puppet-Rbenv.' | cat - ${shrc} > ${shrc}.tmp && mv ${shrc}.tmp ${shrc}",
     user    => $user,
     group   => $group,
-    unless  => "grep -q rbenvrc ${shrc}",
+    unless  => "head -1 ${shrc} | grep -q ${rbenvrc}",
     path    => ['/bin', '/usr/bin', '/usr/sbin'],
     require => File["rbenv::rbenvrc ${user}"],
   }
