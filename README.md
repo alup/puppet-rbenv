@@ -21,7 +21,7 @@ You can use the module in your manifest with the following code:
 
 ```
 rbenv::install { "someuser":
-  group => 'project'
+  group => 'project',
   home  => '/project'
 }
 ```
