@@ -15,5 +15,10 @@ describe 'rbenv::install', :type => :define do
       should contain_exec("rbenv::shrc #{user}").
         with_command("echo 'source /home/#{user}/.rbenvrc' >> /home/#{user}/.profile")
     end
+
+    it "creates a cache folder" do
+      should contain_file("rbenv::cache-dir #{user}").
+        with(:ensure => "directory", :path => "/home/#{user}/.rbenv/cache")
+    end
   end
 end
