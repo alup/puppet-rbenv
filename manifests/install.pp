@@ -46,6 +46,8 @@ define rbenv::install(
   }
 
   file { "rbenv::cache-dir ${user}":
+    owner   => $user,
+    group   => $group,
     ensure  => directory,
     path    => "${root_path}/cache",
     require => Exec["rbenv::checkout ${user}"]
