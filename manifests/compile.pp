@@ -95,6 +95,7 @@ define rbenv::compile(
       content => "$ruby\n",
       owner   => $user,
       group   => $group,
+      require => Exec["rbenv::compile ${user} ${ruby}"]
     }
   }
 }
