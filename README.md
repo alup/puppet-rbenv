@@ -170,4 +170,4 @@ puppet aware of the rbenvgem custom provider and type.
 
 MIT License.
 
-Copyright 2012 Andreas Loupasakis, Marcello Barnaba <vjt@openssl.it>
+Copyright 2012 Andreas Loupasakis, Marcello Barnaba <vjt@openssl.it>, Fabio Rehm
