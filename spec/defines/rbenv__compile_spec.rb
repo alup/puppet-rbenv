@@ -19,7 +19,8 @@ describe 'rbenv::compile', :type => :define do
 
   it "sets the global ruby version for the specific user" do
     should contain_file("rbenv::global #{user}").
-      with_content("#{ruby_version}\n")
+      with_content("#{ruby_version}\n").
+      with_require("Exec[rbenv::compile #{user} #{ruby_version}]")
   end
 
   it "installs ruby-build plugin from official repository" do
