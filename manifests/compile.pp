@@ -61,7 +61,7 @@ define rbenv::compile(
     user        => $user,
     group       => $group,
     cwd         => $home_path,
-    environment => [ "HOME=${home_path} CONFIGURE_OPTS=${configure_opts}" ],
+    environment => [ "HOME=${home_path}", "CONFIGURE_OPTS=${configure_opts}" ],
     creates     => "${versions}/${ruby}",
     path        => $path,
     require     => Rbenv::Plugin["rbenv::plugin::rubybuild::${user}"],
