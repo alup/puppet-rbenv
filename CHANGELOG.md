@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2.0
+
+ - Pass --disable-install-doc configure option by default to rbenv::compile (by Jonathan Owens)
+ - Use cache folder for rbenv installations to benefit from
+https://github.com/sstephenson/ruby-build/pull/232
+
 ## 1.1.0
 
 - Use .profile as the default rc file and let the user override it.
