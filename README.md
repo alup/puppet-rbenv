@@ -158,6 +158,21 @@ The `--libdir=\\$modulepath/rbenv/lib` argument is important to make
 puppet aware of the rbenvgem custom provider and type.
 
 
+## Notes
+
+This project contains a custom `rbenvgem` type for use by the client via module.
+
+Custom types and facts (plugins) are gathered together and distributed via a file mount on
+your Puppet master.
+
+To enable module distribution you need to make changes on both the Puppet master and the clients.
+Specifically, `pluginsync` must be enabled in puppet.conf configuration file on both the master and the clients.
+
+```
+[main]
+pluginsync = true
+```
+
 ## Supported Platforms
 
 * CentOS
