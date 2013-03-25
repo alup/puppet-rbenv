@@ -10,6 +10,7 @@ define rbenv::compile(
   $source = '',
   $global = false,
   $configure_opts = '--disable-install-doc',
+  $make_opts = '',
 ) {
 
   # Workaround http://projects.puppetlabs.com/issues/9848
@@ -61,7 +62,7 @@ define rbenv::compile(
     user        => $user,
     group       => $group,
     cwd         => $home_path,
-    environment => [ "HOME=${home_path}", "CONFIGURE_OPTS=${configure_opts}" ],
+    environment => [ "HOME=${home_path}", "CONFIGURE_OPTS=${configure_opts}", "MAKE_OPTS=${make_opts}" ],
     creates     => "${versions}/${ruby}",
     path        => $path,
     require     => Rbenv::Plugin["rbenv::plugin::rubybuild::${user}"],
