@@ -81,6 +81,17 @@ rbenv::compile { "patched-ree":
 }
 ```
 
+If you're using debugger gems, you'll probably need to keep source tree after building.
+This is achieved by passing `keep => true` parameter.
+
+```
+rbenv::compile { "bar/1.8.7":
+  user => bar",
+  ruby => "1.8.7-p370",
+  keep => true,
+}
+```
+
 ## Gem installation
 
 You can install and keep gems updated for a specific ruby interpreter:
