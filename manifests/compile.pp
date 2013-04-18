@@ -3,12 +3,12 @@
 #
 define rbenv::compile(
   $user,
-  $ruby   = $title,
-  $group  = $user,
-  $home   = '',
-  $root   = '',
-  $source = '',
-  $global = false,
+  $ruby           = $title,
+  $group          = $user,
+  $home           = '',
+  $root           = '',
+  $source         = '',
+  $global         = false,
   $configure_opts = '--disable-install-doc',
 ) {
 
