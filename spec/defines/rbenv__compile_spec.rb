@@ -5,7 +5,8 @@ describe 'rbenv::compile', :type => :define do
   let(:ruby_version) { '1.9.3-p125' }
   let(:title)        { "rbenv::compile::#{user}::#{ruby_version}" }
   let(:dot_rbenv)    { "/home/#{user}/.rbenv" }
-  let(:params)       { {:user => user, :ruby => ruby_version, :global => true} }
+  let(:bundler)      { '1.3.4' }
+  let(:params)       { {:user => user, :ruby => ruby_version, :global => true, :bundler => bundler} }
 
   it "installs ruby of the chosen version" do
     should contain_exec("rbenv::compile #{user} #{ruby_version}").
@@ -29,6 +30,6 @@ describe 'rbenv::compile', :type => :define do
 
   it "installs bundler" do
     should contain_rbenv__gem("rbenv::bundler #{user} #{ruby_version}").
-      with_ensure('present')
+      with_ensure(bundler)
   end
 end

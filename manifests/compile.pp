@@ -3,13 +3,14 @@
 #
 define rbenv::compile(
   $user,
-  $ruby   = $title,
-  $group  = $user,
-  $home   = '',
-  $root   = '',
-  $source = '',
-  $global = false,
+  $ruby           = $title,
+  $group          = $user,
+  $home           = '',
+  $root           = '',
+  $source         = '',
+  $global         = false,
   $configure_opts = '--disable-install-doc',
+  $bundler        = present,
 ) {
 
   # Workaround http://projects.puppetlabs.com/issues/9848
@@ -81,6 +82,7 @@ define rbenv::compile(
   # Install bundler
   #
   rbenv::gem {"rbenv::bundler ${user} ${ruby}":
+    ensure => $bundler,
     user   => $user,
     ruby   => $ruby,
     gem    => 'bundler',
