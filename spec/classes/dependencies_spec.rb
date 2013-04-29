@@ -17,4 +17,9 @@ describe 'rbenv::dependencies' do
     let(:facts) { {:osfamily => 'suse'} }
     it { should include_class('rbenv::dependencies::suse') }
   end
+
+  context 'Amazon Linux' do
+    let(:facts) { {:osfamily => 'Linux'} }
+    it { should include_class('rbenv::dependencies::centos') }
+  end
 end
