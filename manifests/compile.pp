@@ -9,6 +9,7 @@ define rbenv::compile(
   $root           = '',
   $source         = '',
   $global         = false,
+  $keep           = false,
   $configure_opts = '--disable-install-doc',
   $bundler        = present,
 ) {
@@ -22,6 +23,15 @@ define rbenv::compile(
   $versions    = "${root_path}/versions"
   $global_path = "${root_path}/version"
   $path        = [ $shims, $bin, '/bin', '/usr/bin' ]
+
+  # Keep flag saves source tree after building.
+  # This is required for some gems (e.g. debugger)
+  if $keep {
+    $keep_flag = '--keep '
+  }
+  else {
+    $keep_flag = ''
+  }
 
   if ! defined( Class['rbenv::dependencies'] ) {
     require rbenv::dependencies
@@ -57,7 +67,7 @@ define rbenv::compile(
   # Set Timeout to disabled cause we need a lot of time to compile.
   # Use HOME variable and define PATH correctly.
   exec { "rbenv::compile ${user} ${ruby}":
-    command     => "rbenv install ${ruby} && touch ${root_path}/.rehash",
+    command     => "rbenv install ${keep_flag}${ruby} && touch ${root_path}/.rehash",
     timeout     => 0,
     user        => $user,
     group       => $group,
