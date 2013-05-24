@@ -7,7 +7,7 @@ describe 'rbenv::plugin::rbenvvars', :type => :define do
   it {
     should contain_rbenv__plugin("rbenv::plugin::rbenvvars::#{user}").with(
       :plugin_name => 'rbenv-vars',
-      :source      => 'git://github.com/sstephenson/rbenv-vars.git',
+      :source      => 'https://github.com/sstephenson/rbenv-vars.git',
       :user        => user
     )
   }

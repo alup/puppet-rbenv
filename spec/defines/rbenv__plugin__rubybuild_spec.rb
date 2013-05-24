@@ -7,7 +7,7 @@ describe 'rbenv::plugin::rubybuild', :type => :define do
   it {
     should contain_rbenv__plugin("rbenv::plugin::rubybuild::#{user}").with(
       :plugin_name => 'ruby-build',
-      :source      => 'git://github.com/sstephenson/ruby-build.git',
+      :source      => 'https://github.com/sstephenson/ruby-build.git',
       :user        => user
     )
   }
