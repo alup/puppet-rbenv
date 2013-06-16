@@ -1,6 +1,6 @@
 define rbenv::plugin::rubybuild(
   $user   = $title,
-  $source = 'git://github.com/sstephenson/ruby-build.git',
+  $source = 'https://github.com/sstephenson/ruby-build.git',
   $group  = $user,
   $home   = '',
   $root   = ''

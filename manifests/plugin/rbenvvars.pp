@@ -1,6 +1,6 @@
 define rbenv::plugin::rbenvvars(
   $user   = $title,
-  $source = 'git://github.com/sstephenson/rbenv-vars.git',
+  $source = 'https://github.com/sstephenson/rbenv-vars.git',
   $group  = $user,
   $home   = '',
   $root   = ''
