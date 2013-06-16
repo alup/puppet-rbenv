@@ -4,7 +4,7 @@ describe 'rbenv::plugin', :type => :define do
   let(:user)        { 'tester' }
   let(:plugin_name) { 'rbenv-vars' }
   let(:dot_rbenv)   { "/home/#{user}/.rbenv" }
-  let(:source)      { 'git://github.com/rbenv/plugin' }
+  let(:source)      { 'https://github.com/rbenv/plugin' }
   let(:title)       { "rbenv::plugin::#{user}::#{plugin_name}" }
   let(:params)      { {:user => user, :plugin_name => plugin_name, :source => source} }
 
