@@ -21,7 +21,7 @@ define rbenv::install(
     command => "git clone https://github.com/sstephenson/rbenv.git ${root_path}",
     user    => $user,
     group   => $group,
-    creates => $root_path,
+    creates => "$root_path/.git",
     path    => ['/usr/bin', '/usr/sbin'],
     timeout => 100,
     cwd => $home_path,
