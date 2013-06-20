@@ -31,7 +31,7 @@ define rbenv::plugin(
     command => "git clone ${source} ${destination}",
     user    => $user,
     group   => $group,
-    creates => $destination,
+    creates => "$destination/.git",
     path    => ['/usr/bin', '/usr/sbin'],
     timeout => $timeout,
     cwd => $home_path,
