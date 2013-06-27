@@ -39,9 +39,10 @@ define rbenv::plugin(
   }
 
   exec { "rbenv::plugin::update ${user} ${plugin_name}":
-    command => '/usr/bin/git pull',
+    command => 'git pull',
     user    => $user,
     group   => $group,
+    path    => ['/usr/bin', '/usr/sbin'],
     timeout => $timeout,
     cwd     => $destination,
     require => Exec["rbenv::plugin::checkout ${user} ${plugin_name}"],
