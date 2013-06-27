@@ -19,6 +19,15 @@ describe 'rbenv::plugin', :type => :define do
     )
   end
 
+  it 'pulls the latest plugin changes from their git repos' do
+    should contain_exec("rbenv::plugin::update #{user} #{plugin_name}").with(
+      :command => 'git pull',
+      :user    => user,
+      :cwd     => target_path,
+      :require => /rbenv::plugin::checkout #{user} #{plugin_name}/
+    )
+  end
+
   context 'with source != git' do
     let(:source) { 'something != git' }
 
