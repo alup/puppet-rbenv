@@ -4,7 +4,7 @@ define rbenv::install(
   $home  = '',
   $root  = '',
   $rc    = ".profile",
-  $profile_d,
+  $profile_d = '',,
 ) {
 
   # Workaround http://projects.puppetlabs.com/issues/9848
@@ -29,7 +29,7 @@ define rbenv::install(
     require => Package['git'],
   }
 
-  if defined($profile_d) {
+  if $profile_d {
     file { "rbenv::rbenvrc ${profile_d}":
       path    => "${profile_d}/rbenv.sh",
       owner   => root,
