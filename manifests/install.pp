@@ -4,7 +4,7 @@ define rbenv::install(
   $home  = '',
   $root  = '',
   $rc    = ".profile",
-  $profile_d = '',,
+  $profile_d = '',
 ) {
 
   # Workaround http://projects.puppetlabs.com/issues/9848
