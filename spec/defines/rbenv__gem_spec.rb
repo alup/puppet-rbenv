@@ -11,6 +11,7 @@ describe 'rbenv::gem', :type => :define do
   let(:gem_name)       { params[:gem] || title }
   let(:rbenv)          { "/home/#{user}/.rbenv/versions/#{ruby_version}" }
   let(:_ensure)        { params[:ensure] || 'present' }
+  let(:source)         { params[:source] || '' }
   let(:default_params) { {:user => user, :ruby => ruby_version } }
   let(:params)         { default_params.merge(@params) }
 
@@ -35,11 +36,19 @@ describe 'rbenv::gem', :type => :define do
         'gemname' => gem_name,
         'ruby' => params[:ruby],
         'rbenv' => rbenv,
+        'source' => source
     ) 
     }
         end
 
   it_behaves_like "rbenvgem"
+
+  describe "when there is a source param" do
+    before do
+      @params[:source] = 'foo'
+    end
+    it_behaves_like "rbenvgem"
+  end
 
   describe "when there is an ensure param" do
     before do

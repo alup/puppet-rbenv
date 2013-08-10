@@ -6,8 +6,8 @@ Puppet::Type.type(:rbenvgem).provide :default do
   def install
     args = ['install', '--no-rdoc', '--no-ri']
     args << "-v#{resource[:ensure]}" if !resource[:ensure].kind_of?(Symbol)
+    args << [ '--source', "'#{resource[:source]}'" ] if resource[:source]
     args << gem_name
-
     output = gem(*args)
     fail "Could not install: #{output.chomp}" if output.include?('ERROR')
   end

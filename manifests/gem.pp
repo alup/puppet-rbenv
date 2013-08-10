@@ -7,6 +7,7 @@ define rbenv::gem(
   $gem    = $title,
   $home   = '',
   $root   = '',
+  $source = '',
   $ensure = present
 ) {
 
@@ -24,6 +25,7 @@ define rbenv::gem(
     gemname => $gem,
     ruby    => $ruby,
     rbenv   => "${root_path}/versions/${ruby}",
+    source  => $source,
     require => Exec["rbenv::compile ${user} ${ruby}"],
   }
 }
