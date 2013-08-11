@@ -22,7 +22,7 @@ define rbenv::install(
     user    => $user,
     group   => $group,
     creates => $root_path,
-    path    => ['/usr/bin', '/usr/sbin'],
+    path    => ['/bin', '/usr/bin', '/usr/sbin'],
     timeout => 100,
     cwd => $home_path,
     require => Package['git'],
