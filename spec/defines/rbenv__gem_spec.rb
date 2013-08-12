@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'rbenv::gem', :type => :define do
   # User must be unique to this spec so that our fixture doesn't break other specs.
-  # User and version muct match what's in the Exec[rbenv::compile...] 
+  # User and version must match what's in the Exec[rbenv::compile...] 
   # in spec/fixtures/manifests/site.pp so that the 'is this ruby installed' test
   # in rbenvgem.pp will pass.
   let(:user)           { 'gem_tester' }
