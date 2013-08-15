@@ -4,5 +4,6 @@
 #
 if ! echo $PATH | grep -q rbenv; then
   export PATH="<%= @root_path %>/bin:$PATH"
+  export RBENV_ROOT="<%= @root_path %>"
   eval "$(rbenv init -)"
 fi
