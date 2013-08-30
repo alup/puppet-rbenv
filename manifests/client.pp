@@ -4,7 +4,7 @@ define rbenv::client(
   $ruby,
   $owner,
   $source,
-  $rc = ".profile"
+  $rc = '.profile'
 ) {
   if ! defined(Exec["rbenv::compile ${owner} ${ruby}"]) {
     fail("Ruby version ${ruby} is not compiled for ${owner}")
@@ -31,7 +31,7 @@ define rbenv::client(
   file {"${user}/.rbenv-version":
     ensure  => present,
     path    => "${home}/.rbenv-version",
-    content => "$ruby\n",
+    content => "${ruby}\n",
   }
 
   file {"${user}/bin":
