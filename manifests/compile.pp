@@ -107,7 +107,7 @@ define rbenv::compile(
   if $global {
     file { "rbenv::global ${user}":
       path    => $global_path,
-      content => "$ruby\n",
+      content => "${ruby}\n",
       owner   => $user,
       group   => $group,
       require => Exec["rbenv::compile ${user} ${ruby}"]
