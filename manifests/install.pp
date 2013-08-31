@@ -3,7 +3,7 @@ define rbenv::install(
   $group = $user,
   $home  = '',
   $root  = '',
-  $rc    = ".profile"
+  $rc    = '.profile'
 ) {
 
   # Workaround http://projects.puppetlabs.com/issues/9848
@@ -24,7 +24,7 @@ define rbenv::install(
     creates => $root_path,
     path    => ['/bin', '/usr/bin', '/usr/sbin'],
     timeout => 100,
-    cwd => $home_path,
+    cwd     => $home_path,
     require => Package['git'],
   }
 
@@ -46,9 +46,9 @@ define rbenv::install(
   }
 
   file { "rbenv::cache-dir ${user}":
+    ensure  => directory,
     owner   => $user,
     group   => $group,
-    ensure  => directory,
     path    => "${root_path}/cache",
     require => Exec["rbenv::checkout ${user}"]
   }
