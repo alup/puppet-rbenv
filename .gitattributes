@@ -1,5 +1,4 @@
-# Set default behaviour, in case users don't have core.autocrlf set.
-* text=auto
-
-# Declare files that will always have LF line endings on checkout.
+# Template files should have UNIX style line endings
+# since they will most likely be run in a Linux
+# virtual machine.
 *.erb text eol=lf
