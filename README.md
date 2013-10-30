@@ -107,6 +107,16 @@ Gems are handled using a custom Package provider that handles gems,
 somewhat inspired by Puppet's Package one - thus `absent` and `latest`
 work as expected.
 
+You can specify a gem source with the optional `source` parameter:
+
+```
+rbenv::gem { "my_private_gem":
+  user   => "foobarbaz",
+  ruby   => "1.9.3-p327",
+  source => "http://gems.mydoma.in/"
+}
+```
+
 ## rbenv plugins
 
 To add a plugin to a rbenv installation, you use `rbenv::plugin` as follows:
