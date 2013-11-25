@@ -20,7 +20,7 @@ In a nutshell, it supports the following conveniences:
 You can use the module in your manifest with the following code:
 
 ```
-rbenv::install { "someuser":
+rbenv::install { 'someuser':
   group => 'project',
   home  => '/project'
 }
@@ -39,9 +39,9 @@ that must be an absolute path.
 To compile a ruby interpreter, you use `rbenv::compile` as follows:
 
 ```
-rbenv::compile { "1.9.3-p327":
-  user => "someuser",
-  home => "/project",
+rbenv::compile { '1.9.3-p327':
+  user => 'someuser',
+  home => '/project',
 }
 ```
 
@@ -50,14 +50,14 @@ multiple rubies under multiple users, you'll have to define them
 explicitly:
 
 ```
-rbenv::compile { "foo/1.8.7":
-  user => "foo",
-  ruby => "1.8.7-p370",
+rbenv::compile { 'foo/1.8.7':
+  user => 'foo',
+  ruby => '1.8.7-p370',
 }
 
-rbenv::compile { "bar/1.8.7":
-  user => bar",
-  ruby => "1.8.7-p370",
+rbenv::compile { 'bar/1.8.7':
+  user => 'bar',
+  ruby => '1.8.7-p370',
 }
 ```
 
@@ -74,10 +74,10 @@ specifying a `source` that can either be a `puppet:` source or
 a file to be downloaded using `wget`:
 
 ```
-rbenv::compile { "patched-ree":
-  user   => "someuser",
-  home   => "/project",
-  source => "puppet://path-to-definition"
+rbenv::compile { 'patched-ree':
+  user   => 'someuser',
+  home   => '/project',
+  source => 'puppet://path-to-definition'
 }
 ```
 
@@ -85,9 +85,9 @@ If you're using debugger gems, you'll probably need to keep source tree after bu
 This is achieved by passing `keep => true` parameter.
 
 ```
-rbenv::compile { "bar/1.8.7":
-  user => bar",
-  ruby => "1.8.7-p370",
+rbenv::compile { 'bar/1.8.7':
+  user => 'bar',
+  ruby => '1.8.7-p370',
   keep => true,
 }
 ```
@@ -97,9 +97,9 @@ rbenv::compile { "bar/1.8.7":
 You can install and keep gems updated for a specific ruby interpreter:
 
 ```
-rbenv::gem { "unicorn":
-  user => "foobarbaz",
-  ruby => "1.9.3-p327",
+rbenv::gem { 'unicorn':
+  user => 'foobarbaz',
+  ruby => '1.9.3-p327',
 }
 ```
 
@@ -110,10 +110,10 @@ work as expected.
 You can specify a gem source with the optional `source` parameter:
 
 ```
-rbenv::gem { "my_private_gem":
-  user   => "foobarbaz",
-  ruby   => "1.9.3-p327",
-  source => "http://gems.mydoma.in/"
+rbenv::gem { 'my_private_gem':
+  user   => 'foobarbaz',
+  ruby   => '1.9.3-p327',
+  source => 'http://gems.mydoma.in/'
 }
 ```
 
@@ -122,9 +122,9 @@ rbenv::gem { "my_private_gem":
 To add a plugin to a rbenv installation, you use `rbenv::plugin` as follows:
 
 ```
-rbenv::plugin { "my-plugin":
-  user   => "someuser",
-  source => "git://github.com/user/my-plugin.git"
+rbenv::plugin { 'my-plugin':
+  user   => 'someuser',
+  source => 'git://github.com/user/my-plugin.git'
 }
 ```
 
@@ -132,9 +132,9 @@ There's also a built-in resource to add [rbenv-vars](https://github.com/sstephen
 for a user:
 
 ```
-rbenv::plugin::rbenvvars { "someuser":
+rbenv::plugin::rbenvvars { 'someuser':
   # Optional:
-  # source => "git://path-to-your/custom/rbenv-vars.git"
+  # source => 'git://path-to-your/custom/rbenv-vars.git'
 }
 ```
 
@@ -143,8 +143,8 @@ to compile rubies, if you want to use a different repository, you can specify
 the resource on a separate manifest:*
 
 ```
-rbenv::plugin::rubybuild { "someuser":
-  source => "git://path-to-your/git/repo"
+rbenv::plugin::rubybuild { 'someuser':
+  source => 'git://path-to-your/git/repo'
 }
 ```
 
