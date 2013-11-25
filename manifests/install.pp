@@ -28,6 +28,15 @@ define rbenv::install(
     require => Package['git'],
   }
 
+  file { "rbenv::dotrbenv perms":
+    path    => "$root_path/libexec",
+    recurse => true,
+    mode    => '0750',
+    owner   => $user,
+    group   => $group,
+    require => Exec["rbenv::checkout ${user}"],
+  }
+
   file { "rbenv::rbenvrc ${user}":
     path    => $rbenvrc,
     owner   => $user,
