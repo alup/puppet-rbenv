@@ -4,3 +4,4 @@
 pkg/*
 tmp/*
 bin/*
+spec/fixtures/*
