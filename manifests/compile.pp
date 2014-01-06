@@ -80,17 +80,6 @@ define rbenv::compile(
     before      => Exec["rbenv::rehash ${user} ${ruby}"],
   }
 
-  exec { "rbenv::rehash ${user} ${ruby}":
-    command     => "rbenv rehash && rm -f ${root_path}/.rehash",
-    user        => $user,
-    group       => $group,
-    cwd         => $home_path,
-    onlyif      => "[ -e '${root_path}/.rehash' ]",
-    environment => [ "HOME=${home_path}" ],
-    path        => $path,
-    logoutput   => 'on_failure',
-  }
-
   # Install bundler
   #
   rbenv::gem {"rbenv::bundler ${user} ${ruby}":
@@ -100,6 +89,18 @@ define rbenv::compile(
     gem    => 'bundler',
     home   => $home_path,
     root   => $root_path,
+  }
+
+  exec { "rbenv::rehash ${user} ${ruby}":
+    command     => "rbenv rehash && rm -f ${root_path}/.rehash",
+    user        => $user,
+    group       => $group,
+    cwd         => $home_path,
+    onlyif      => "[ -e '${root_path}/.rehash' ]",
+    environment => [ "HOME=${home_path}" ],
+    path        => $path,
+    logoutput   => 'on_failure',
+    require     => Rbenv::Gem["rbenv::bundler ${user} ${ruby}"],
   }
 
   # Set default global ruby version for rbenv, if requested
