@@ -8,6 +8,7 @@ define rbenv::compile(
   $home           = '',
   $root           = '',
   $source         = '',
+  $patch          = '',
   $global         = false,
   $keep           = false,
   $configure_opts = '--disable-install-doc',
@@ -31,6 +32,15 @@ define rbenv::compile(
   }
   else {
     $keep_flag = ''
+  }
+
+  if $patch {
+    $pipe_patch = "${patch} | "
+    $patch_flag = '--patch '
+  }
+  else {
+    $pipe_patch = ''
+    $patch_flag = ''
   }
 
   if ! defined( Class['rbenv::dependencies'] ) {
@@ -67,7 +77,7 @@ define rbenv::compile(
   # Set Timeout to disabled cause we need a lot of time to compile.
   # Use HOME variable and define PATH correctly.
   exec { "rbenv::compile ${user} ${ruby}":
-    command     => "rbenv install ${keep_flag}${ruby} && touch ${root_path}/.rehash",
+    command     => "${pipe_patch}rbenv install ${patch_flag}${keep_flag}${ruby} && touch ${root_path}/.rehash",
     timeout     => 0,
     user        => $user,
     group       => $group,
