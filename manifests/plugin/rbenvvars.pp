@@ -14,7 +14,7 @@ define rbenv::plugin::rbenvvars(
     plugin_name => 'rbenv-vars',
     group       => $group,
     home        => $home,
-    root        => $root
+    root        => $root,
     ensure      => $ensure,
     version     => $version,
   }
