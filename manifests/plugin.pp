@@ -6,6 +6,8 @@ define rbenv::plugin(
   $home        = '',
   $root        = '',
   $timeout     = 100
+  $ensure      = latest,
+  $version     = 'master',
 ) {
 
   $home_path   = $home ? { '' => "/home/${user}",       default => $home }
@@ -27,25 +29,13 @@ define rbenv::plugin(
     }
   }
 
-  exec { "rbenv::plugin::checkout ${user} ${plugin_name}":
-    command => "git clone ${source} ${destination}",
-    user    => $user,
-    group   => $group,
-    creates => $destination,
-    path    => ['/bin', '/usr/bin', '/usr/sbin'],
-    timeout => $timeout,
-    cwd     => $home_path,
-    require => File["rbenv::plugins ${user}"],
+  vcsrepo { $destination:
+    ensure   => $ensure,
+    provider => 'git',
+    source   => $source,
+    user     => $user,
+    group    => $group,
+    revision => $version,
+    require  => File["rbenv::plugins ${user}"],
   }
-
-  exec { "rbenv::plugin::update ${user} ${plugin_name}":
-    command => 'git pull',
-    user    => $user,
-    group   => $group,
-    path    => ['/bin', '/usr/bin', '/usr/sbin'],
-    timeout => $timeout,
-    cwd     => $destination,
-    require => Exec["rbenv::plugin::checkout ${user} ${plugin_name}"],
-  }
-
 }
