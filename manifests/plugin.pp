@@ -5,7 +5,7 @@ define rbenv::plugin(
   $group       = $user,
   $home        = '',
   $root        = '',
-  $timeout     = 100
+  $timeout     = 100,
   $ensure      = latest,
   $version     = 'master',
 ) {
@@ -25,7 +25,7 @@ define rbenv::plugin(
       path    => $plugins,
       owner   => $user,
       group   => $group,
-      require => Exec["rbenv::checkout ${user}"],
+      require => Vcsrepo[$root_path],
     }
   }
 

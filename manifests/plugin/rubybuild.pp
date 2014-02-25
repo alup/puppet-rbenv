@@ -3,7 +3,7 @@ define rbenv::plugin::rubybuild(
   $source  = 'https://github.com/sstephenson/ruby-build.git',
   $group   = $user,
   $home    = '',
-  $root    = ''
+  $root    = '',
   $ensure  = latest,
   $version = 'master',
 ) {
@@ -14,7 +14,7 @@ define rbenv::plugin::rubybuild(
     plugin_name => 'ruby-build',
     group       => $group,
     home        => $home,
-    root        => $root
+    root        => $root,
     ensure      => $ensure,
     version     => $version,
   }
