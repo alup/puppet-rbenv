@@ -1,4 +1,5 @@
 require 'rake'
+require 'puppetlabs_spec_helper/rake_tasks'
 
 begin
   require 'rspec/core/rake_task'
