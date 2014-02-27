@@ -31,7 +31,7 @@ Puppet::Type.type(:rbenvgem).provide :default do
 
     def gem(*args)
       exe =  "RBENV_VERSION=#{resource[:ruby]} " + resource[:rbenv] + '/bin/gem'
-      su('-', resource[:user], '--', '-c', [exe, *args].join(' '))
+      su(resource[:user], '--', '-c', [exe, *args].join(' '))
     end
 
     def list(where = :local)
