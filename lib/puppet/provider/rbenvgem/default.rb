@@ -2,6 +2,7 @@ Puppet::Type.type(:rbenvgem).provide :default do
   desc "Maintains gems inside an RBenv setup"
 
   commands :su => 'su'
+  commands :sudo => "sudo"
 
   def install
     args = ['install', '--no-rdoc', '--no-ri']
@@ -31,7 +32,7 @@ Puppet::Type.type(:rbenvgem).provide :default do
 
     def gem(*args)
       exe =  "RBENV_VERSION=#{resource[:ruby]} " + resource[:rbenv] + '/bin/gem'
-      su('-', resource[:user], '-c', "'"+ [exe, *args].join(' ') + "'")
+      sudo('-u', resource[:user],  [exe, *args].join(' '))
     end
 
     def list(where = :local)
