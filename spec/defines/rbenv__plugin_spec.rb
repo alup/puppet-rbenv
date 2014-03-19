@@ -22,7 +22,7 @@ describe 'rbenv::plugin', :type => :define do
 
   it 'pulls the latest plugin changes from their git repos' do
     should contain_exec("rbenv::plugin::update #{user} #{plugin_name}").with(
-      :command => 'git pull',
+      :command => 'git fetch && git reset --hard origin/master',
       :user    => user,
       :cwd     => target_path,
       :require => /rbenv::plugin::checkout #{user} #{plugin_name}/,
