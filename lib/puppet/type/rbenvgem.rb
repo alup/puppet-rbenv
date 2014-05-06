@@ -59,4 +59,8 @@ Puppet::Type.newtype(:rbenvgem) do
     desc 'The rbenv owner'
   end
 
+  newparam(:source) do
+    desc 'The gem source'
+  end
+
 end

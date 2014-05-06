@@ -1,0 +1,4 @@
+# Template files should have UNIX style line endings
+# since they will most likely be run in a Linux
+# virtual machine.
+*.erb text eol=lf

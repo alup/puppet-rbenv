@@ -15,7 +15,18 @@ describe 'rbenv::plugin', :type => :define do
       :command => "git clone #{source} #{target_path}",
       :user    => user,
       :creates => target_path,
-      :require => /rbenv::plugins #{user}/
+      :require => /rbenv::plugins #{user}/,
+      :path    => ['/bin','/usr/bin','/usr/sbin']
+    )
+  end
+
+  it 'pulls the latest plugin changes from their git repos' do
+    should contain_exec("rbenv::plugin::update #{user} #{plugin_name}").with(
+      :command => 'git pull',
+      :user    => user,
+      :cwd     => target_path,
+      :require => /rbenv::plugin::checkout #{user} #{plugin_name}/,
+      :path    => ['/bin','/usr/bin','/usr/sbin']
     )
   end
 

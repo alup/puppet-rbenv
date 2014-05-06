@@ -1,9 +1,9 @@
 define rbenv::install(
-  $user  = $title,
-  $group = $user,
-  $home  = '',
-  $root  = '',
-  $rc    = ".profile",
+  $user      = $title,
+  $group     = $user,
+  $home      = '',
+  $root      = '',
+  $rc        = ".profile",
   $profile_d = '',
 ) {
 
@@ -23,9 +23,9 @@ define rbenv::install(
     user    => $user,
     group   => $group,
     creates => "$root_path/.git",
-    path    => ['/usr/bin', '/usr/sbin'],
+    path    => ['/bin', '/usr/bin', '/usr/sbin'],
     timeout => 100,
-    cwd => $home_path,
+    cwd     => $home_path,
     require => Package['git'],
   }
 
@@ -58,9 +58,9 @@ define rbenv::install(
   }
 
   file { "rbenv::cache-dir ${user}":
+    ensure  => directory,
     owner   => $user,
     group   => $group,
-    ensure  => directory,
     path    => "${root_path}/cache",
     require => Exec["rbenv::checkout ${user}"]
   }
