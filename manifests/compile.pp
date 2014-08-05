@@ -1,6 +1,8 @@
 # The following part compiles and installs the chosen ruby version,
 # using the "ruby-build" rbenv plugin.
 #
+# You may define a web proxy using $http_proxy if necessary.
+#
 define rbenv::compile(
   $user,
   $ruby           = $title,
@@ -13,6 +15,11 @@ define rbenv::compile(
   $configure_opts = '--disable-install-doc',
   $bundler        = present,
 ) {
+
+  $http_proxy_env = $::http_proxy ? {
+    undef   => [],
+    default => [ "HTTP_PROXY=${::http_proxy}", "http_proxy=${::http_proxy}", "HTTPS_PROXY=${::https_proxy}", "https_proxy=${::https_proxy}" ],
+  }
 
   # Workaround http://projects.puppetlabs.com/issues/9848
   $home_path = $home ? { '' => "/home/${user}", default => $home }
@@ -72,7 +79,7 @@ define rbenv::compile(
     user        => $user,
     group       => $group,
     cwd         => $home_path,
-    environment => [ "HOME=${home_path}", "CONFIGURE_OPTS=${configure_opts}" ],
+    environment => concat([ "HOME=${home_path}", "CONFIGURE_OPTS=${configure_opts}" ], $http_proxy_env),
     creates     => "${versions}/${ruby}",
     path        => $path,
     logoutput   => 'on_failure',
