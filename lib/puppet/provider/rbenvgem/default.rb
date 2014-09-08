@@ -2,7 +2,6 @@ Puppet::Type.type(:rbenvgem).provide :default do
   desc "Maintains gems inside an RBenv setup"
 
   commands :su => 'su'
-  commands :sudo => "sudo"
 
   def install
     args = ['install', '--no-rdoc', '--no-ri']
