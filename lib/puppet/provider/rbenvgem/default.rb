@@ -31,11 +31,8 @@ Puppet::Type.type(:rbenvgem).provide :default do
     end
 
     def gem(*args)
-      cmd = "-u#{resource[:user]}"
-      env = "RBENV_VERSION=#{resource[:ruby]}"
-      exe = resource[:rbenv]+'/bin/gem'
-
-      sudo(cmd, env, exe, *args)
+      exe =  "RBENV_VERSION=#{resource[:ruby]} " + resource[:rbenv] + '/bin/gem'
+      su('-', resource[:user], '-c', [exe, *args].join(' '))
     end
 
     def list(where = :local)
