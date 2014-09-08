@@ -31,9 +31,9 @@ Puppet::Type.type(:rbenvgem).provide :default do
     end
 
     def gem(*args)
+      cmd = "-u#{resource[:user]}"
       env = "RBENV_VERSION=#{resource[:ruby]}"
       exe = resource[:rbenv]+'/bin/gem'
-      cmd = "-u#{resource[:user]}"
 
       sudo(cmd, env, exe, *args)
     end
