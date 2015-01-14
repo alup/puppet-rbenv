@@ -1,8 +1,6 @@
 Puppet::Type.type(:rbenvgem).provide :default do
   desc "Maintains gems inside an RBenv setup"
 
-  commands :su => 'su'
-
   def install
     args = ['install', '--no-rdoc', '--no-ri']
     args << "-v#{resource[:ensure]}" if !resource[:ensure].kind_of?(Symbol)
@@ -30,8 +28,20 @@ Puppet::Type.type(:rbenvgem).provide :default do
     end
 
     def gem(*args)
-      exe =  "RBENV_VERSION=#{resource[:ruby]} " + resource[:rbenv] + '/bin/gem'
-      su('-', resource[:user], '-c', [exe, *args].join(' '))
+      require 'etc'
+      user = resource[:user]
+      home = Etc.getpwnam(user)[:dir]
+
+      exe  = "#{resource[:rbenv]}/bin/gem"
+
+      Puppet::Util::Execution.execute([exe, *args].join(' '),
+        :uid => user,
+        :failonfail => true,
+        :custom_environment => {
+          'HOME'          => home,
+          'RBENV_VERSION' => resource[:ruby],
+        }
+      )
     end
 
     def list(where = :local)
