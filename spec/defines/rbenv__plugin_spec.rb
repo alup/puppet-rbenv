@@ -11,22 +11,14 @@ describe 'rbenv::plugin', :type => :define do
   let(:target_path) { "#{dot_rbenv}/plugins/#{plugin_name}" }
 
   it 'clones repository to the right path' do
-    should contain_exec("rbenv::plugin::checkout #{user} #{plugin_name}").with(
-      :command => "git clone #{source} #{target_path}",
-      :user    => user,
-      :creates => target_path,
-      :require => /rbenv::plugins #{user}/,
-      :path    => ['/bin','/usr/bin','/usr/sbin']
-    )
-  end
-
-  it 'pulls the latest plugin changes from their git repos' do
-    should contain_exec("rbenv::plugin::update #{user} #{plugin_name}").with(
-      :command => 'git pull',
-      :user    => user,
-      :cwd     => target_path,
-      :require => /rbenv::plugin::checkout #{user} #{plugin_name}/,
-      :path    => ['/bin','/usr/bin','/usr/sbin']
+    should contain_vcsrepo("#{dot_rbenv}/plugins/#{plugin_name}").with(
+      :ensure   => 'latest',
+      :provider => 'git',
+      :source   => source,
+      :user     => user,
+      :group    => user,
+      :revision => 'master',
+      :require  => /rbenv::plugins #{user}/,
     )
   end
 

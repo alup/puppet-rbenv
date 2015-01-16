@@ -1,0 +1,7 @@
+fixtures:
+  repositories:
+    vcsrepo:
+      repo: "git://github.com/puppetlabs/puppetlabs-vcsrepo"
+      ref: "0.2.0"
+  symlinks:
+    rbenv: "#{source_dir}"

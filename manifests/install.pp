@@ -1,9 +1,11 @@
 define rbenv::install(
-  $user  = $title,
-  $group = $user,
-  $home  = '',
-  $root  = '',
-  $rc    = '.profile'
+  $user    = $title,
+  $group   = $user,
+  $home    = '',
+  $root    = '',
+  $rc      = '.profile',
+  $ensure  = present,
+  $version = 'master',
 ) {
 
   # Workaround http://projects.puppetlabs.com/issues/9848
@@ -17,15 +19,13 @@ define rbenv::install(
     require rbenv::dependencies
   }
 
-  exec { "rbenv::checkout ${user}":
-    command => "git clone https://github.com/sstephenson/rbenv.git ${root_path}",
-    user    => $user,
-    group   => $group,
-    creates => $root_path,
-    path    => ['/bin', '/usr/bin', '/usr/sbin'],
-    timeout => 100,
-    cwd     => $home_path,
-    require => Package['git'],
+  vcsrepo { $root_path:
+    ensure   => $ensure,
+    provider => 'git',
+    source   => 'git://github.com/sstephenson/rbenv.git',
+    user     => $user,
+    group    => $group,
+    revision => $version,
   }
 
   file { "rbenv::rbenvrc ${user}":
@@ -33,7 +33,7 @@ define rbenv::install(
     owner   => $user,
     group   => $group,
     content => template('rbenv/dot.rbenvrc.erb'),
-    require => Exec["rbenv::checkout ${user}"],
+    require => Vcsrepo[$root_path]
   }
 
   exec { "rbenv::shrc ${user}":
@@ -50,6 +50,6 @@ define rbenv::install(
     owner   => $user,
     group   => $group,
     path    => "${root_path}/cache",
-    require => Exec["rbenv::checkout ${user}"]
+    require => Vcsrepo[$root_path],
   }
 }
