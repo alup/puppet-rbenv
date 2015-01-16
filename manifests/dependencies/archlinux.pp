@@ -7,6 +7,7 @@ class rbenv::dependencies::archlinux {
   if ! defined(Package['readline']) { package { 'readline' : ensure => installed } }
   if ! defined(Package['zlib'])     { package { 'zlib'     : ensure => installed } }
   if ! defined(Package['openssl'])  { package { 'openssl'  : ensure => installed } }
+  if ! defined(Package['libffi'])   { package { 'libffi'   : ensure => installed } }
   if ! defined(Package['libyaml'])  { package { 'libyaml'  : ensure => installed } }
   if ! defined(Package['libxml2'])  { package { 'libxml2'  : ensure => installed } }
   if ! defined(Package['libxslt'])  { package { 'libxslt'  : ensure => installed } }

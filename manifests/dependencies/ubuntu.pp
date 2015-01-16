@@ -15,6 +15,7 @@ class rbenv::dependencies::ubuntu {
   }
   if ! defined(Package['zlib1g'])           { package { 'zlib1g':           ensure => installed } }
   if ! defined(Package['zlib1g-dev'])       { package { 'zlib1g-dev':       ensure => installed } }
+  if ! defined(Package['libffi-dev'])       { package { 'libffi-dev':       ensure => installed } }
   if ! defined(Package['libssl-dev'])       { package { 'libssl-dev':       ensure => installed } }
   if ! defined(Package['libyaml-dev'])      { package { 'libyaml-dev':      ensure => installed } }
   if ! defined(Package['libxml2-dev'])      { package { 'libxml2-dev':      ensure => installed } }

@@ -17,6 +17,7 @@ class rbenv::dependencies::centos {
   # Other packages required to build a proper Ruby
   if ! defined(Package['readline-devel']) { package { 'readline-devel': ensure => installed } }
   if ! defined(Package['openssl-devel'])  { package { 'openssl-devel':  ensure => installed } }
+  if ! defined(Package['libffi-devel'])   { package { 'libffi-devel':   ensure => installed } }
   if ! defined(Package['zlib-devel'])     { package { 'zlib-devel':     ensure => installed } }
 
   # Git and curl are needed for rbenv and ruby-build

@@ -18,6 +18,7 @@ class rbenv::dependencies::suse {
   if ! defined(Package['readline-devel']) { package { 'readline-devel': ensure => installed } }
   if ! defined(Package['openssl-devel'])  { package { 'openssl-devel' : ensure => installed, name => 'libopenssl-devel'} }
   if ! defined(Package['zlib-devel'])     { package { 'zlib-devel'    : ensure => installed } }
+  if ! defined(Package['libffi-devel'])   { package { 'libffi-devel'  : ensure => installed } }
   if ! defined(Package['libyaml-devel'])  { package { 'libyaml-devel' : ensure => installed } }
   if ! defined(Package['ncurses-devel'])  { package { 'ncurses-devel' : ensure => installed } }
 
