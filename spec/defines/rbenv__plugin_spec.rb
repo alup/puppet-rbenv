@@ -26,7 +26,10 @@ describe 'rbenv::plugin', :type => :define do
       :user    => user,
       :cwd     => target_path,
       :require => /rbenv::plugin::checkout #{user} #{plugin_name}/,
-      :path    => ['/bin','/usr/bin','/usr/sbin']
+      :path    => ['/bin','/usr/bin','/usr/sbin'],
+      :onlyif  => 'git remote update; ' \
+                  'if [ "$(git rev-parse @{0})" = "$(git rev-parse @{u})" ]; ' \
+                  'then return 0; else return 1; fi ]'
     )
   end
 
