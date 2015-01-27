@@ -23,30 +23,15 @@ define rbenv::plugin(
       path    => $plugins,
       owner   => $user,
       group   => $group,
-      require => Exec["rbenv::checkout ${user}"],
+      require => Vcsrepo[$root_path],
     }
   }
 
-  exec { "rbenv::plugin::checkout ${user} ${plugin_name}":
-    command => "git clone ${source} ${destination}",
-    user    => $user,
+  vcsrepo { $destination:
+    ensure  => latest,
+    source  => $source,
+    owner   => $user,
     group   => $group,
-    creates => $destination,
-    path    => ['/bin', '/usr/bin', '/usr/sbin'],
-    timeout => $timeout,
-    cwd     => $home_path,
     require => File["rbenv::plugins ${user}"],
   }
-
-  exec { "rbenv::plugin::update ${user} ${plugin_name}":
-    command => 'git pull',
-    user    => $user,
-    group   => $group,
-    path    => ['/bin', '/usr/bin', '/usr/sbin'],
-    timeout => $timeout,
-    cwd     => $destination,
-    require => Exec["rbenv::plugin::checkout ${user} ${plugin_name}"],
-    onlyif  => 'git remote update; if [ "$(git rev-parse @{0})" = "$(git rev-parse @{u})" ]; then return 0; else return 1; fi ]',
-  }
-
 }
