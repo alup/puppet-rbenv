@@ -206,4 +206,4 @@ pluginsync = true
 
 MIT License.
 
-Copyright 2012 Andreas Loupasakis, Marcello Barnaba <vjt@openssl.it>, Fabio Rehm
+Copyright 2012-2015 Andreas Loupasakis, Marcello Barnaba <vjt@openssl.it>, Fabio Rehm
