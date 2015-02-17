@@ -12,6 +12,7 @@ define rbenv::compile(
   $keep           = false,
   $configure_opts = '--disable-install-doc',
   $bundler        = present,
+  $tmp_dir        = "/tmp"
 ) {
 
   # Workaround http://projects.puppetlabs.com/issues/9848
@@ -72,7 +73,7 @@ define rbenv::compile(
     user        => $user,
     group       => $group,
     cwd         => $home_path,
-    environment => [ "HOME=${home_path}", "CONFIGURE_OPTS=${configure_opts}" ],
+    environment => [ "HOME=${home_path}", "CONFIGURE_OPTS=${configure_opts}", "TMPDIR=$tmp_dir" ],
     creates     => "${versions}/${ruby}",
     path        => $path,
     logoutput   => 'on_failure',
