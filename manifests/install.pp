@@ -1,9 +1,10 @@
 define rbenv::install(
-  $user  = $title,
-  $group = $user,
-  $home  = '',
-  $root  = '',
-  $rc    = '.profile'
+  $user      = $title,
+  $group     = $user,
+  $home      = '',
+  $root      = '',
+  $rc        = ".profile",
+  $profile_d = '',
 ) {
 
   # Workaround http://projects.puppetlabs.com/issues/9848
@@ -21,11 +22,22 @@ define rbenv::install(
     command => "git clone https://github.com/sstephenson/rbenv.git ${root_path}",
     user    => $user,
     group   => $group,
-    creates => $root_path,
+    creates => "$root_path/.git",
     path    => ['/bin', '/usr/bin', '/usr/sbin'],
     timeout => 100,
     cwd     => $home_path,
     require => Package['git'],
+  }
+
+  if $profile_d {
+    file { "rbenv::rbenvrc ${profile_d}":
+      path    => "${profile_d}/rbenv.sh",
+      owner   => root,
+      group   => root,
+      mode    => 644,
+      content => template('rbenv/dot.rbenvrc.erb'),
+      require => Exec["rbenv::checkout ${user}"],
+    }
   }
 
   file { "rbenv::rbenvrc ${user}":
