@@ -13,7 +13,7 @@ describe 'rbenv::install', :type => :define do
 
     it "appends in a rc file, a command to include .rbenv/bin folder in PATH env variable" do
       should contain_exec("rbenv::shrc #{user}").
-        with_command("echo 'source /home/#{user}/.rbenvrc' >> /home/#{user}/.profile").
+        with_command("echo '. /home/#{user}/.rbenvrc' >> /home/#{user}/.profile").
         with_path(['/bin','/usr/bin','/usr/sbin'])
     end
 
