@@ -12,6 +12,7 @@ define rbenv::compile(
   $keep           = false,
   $configure_opts = '--disable-install-doc',
   $bundler        = present,
+  $compile_path   = [],
 ) {
 
   # Workaround http://projects.puppetlabs.com/issues/9848
@@ -22,7 +23,8 @@ define rbenv::compile(
   $shims       = "${root_path}/shims"
   $versions    = "${root_path}/versions"
   $global_path = "${root_path}/version"
-  $path        = [ $shims, $bin, '/bin', '/usr/bin' ]
+
+  $path        = [ $shims, $bin, '/bin', '/usr/bin', $compile_path ]
 
   # Keep flag saves source tree after building.
   # This is required for some gems (e.g. debugger)
