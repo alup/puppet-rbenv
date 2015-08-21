@@ -11,6 +11,7 @@ define rbenv::compile(
   $global         = false,
   $keep           = false,
   $configure_opts = '--disable-install-doc',
+  $cflags         = '',
   $bundler        = present,
 ) {
 
@@ -72,7 +73,7 @@ define rbenv::compile(
     user        => $user,
     group       => $group,
     cwd         => $home_path,
-    environment => [ "HOME=${home_path}", "CONFIGURE_OPTS=${configure_opts}" ],
+    environment => [ "HOME=${home_path}", "CONFIGURE_OPTS=${configure_opts}", "CFLAGS=${cflags}" ],
     creates     => "${versions}/${ruby}",
     path        => $path,
     logoutput   => 'on_failure',
