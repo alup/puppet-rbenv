@@ -27,5 +27,6 @@ define rbenv::gem(
     rbenv   => "${root_path}/versions/${ruby}",
     source  => $source,
     require => Exec["rbenv::compile ${user} ${ruby}"],
+    notify => Exec["rbenv::rehash ${user} ${ruby}"]
   }
 }
