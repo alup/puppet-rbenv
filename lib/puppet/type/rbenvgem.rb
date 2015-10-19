@@ -63,4 +63,21 @@ Puppet::Type.newtype(:rbenvgem) do
     desc 'The gem source'
   end
 
+  newparam(:timeout) do
+    desc "Maximum time permitted for `gem` to execute.
+      Defaults to 300 seconds."
+
+    munge do |value|
+      value = value.shift if value.is_a?(Array)
+      begin
+        value = Float(value)
+      rescue ArgumentError
+        raise ArgumentError, "The timeout must be a number.", $!.backtrace
+      end
+      [value, 0.0].max
+    end
+
+    defaultto 300
+  end
+
 end

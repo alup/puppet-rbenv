@@ -34,14 +34,16 @@ Puppet::Type.type(:rbenvgem).provide :default do
 
       exe  = "#{resource[:rbenv]}/bin/gem"
 
-      Puppet::Util::Execution.execute([exe, *args].join(' '),
-        :uid => user,
-        :failonfail => true,
-        :custom_environment => {
-          'HOME'          => home,
-          'RBENV_VERSION' => resource[:ruby],
-        }
-      )
+      Timeout::timeout(resource[:timeout], Timeout::Error) do
+        Puppet::Util::Execution.execute([exe, *args].join(' '),
+          :uid => user,
+          :failonfail => true,
+          :custom_environment => {
+            'HOME'          => home,
+            'RBENV_VERSION' => resource[:ruby],
+          }
+        )
+      end
     end
 
     def list(where = :local)
