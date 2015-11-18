@@ -3,7 +3,7 @@ define rbenv::install(
   $group = $user,
   $home  = '',
   $root  = '',
-  $rc    = '.profile'
+  $rc    = ['.profile']
 ) {
 
   # Workaround http://projects.puppetlabs.com/issues/9848
@@ -35,14 +35,16 @@ define rbenv::install(
     content => template('rbenv/dot.rbenvrc.erb'),
     require => Exec["rbenv::checkout ${user}"],
   }
-
-  exec { "rbenv::shrc ${user}":
-    command => "echo 'source ${rbenvrc}' >> ${shrc}",
-    user    => $user,
-    group   => $group,
-    unless  => "grep -q rbenvrc ${shrc}",
-    path    => ['/bin', '/usr/bin', '/usr/sbin'],
-    require => File["rbenv::rbenvrc ${user}"],
+  $rc.each |$r| {
+    $rc_path = "${home_path}/${r}"
+    exec { "rbenv::shrc ${user}-${r}":
+      command => "echo 'source ${rbenvrc}' >> ${rc_path}",
+      user    => $user,
+      group   => $group,
+      unless  => "grep -q rbenvrc ${rc_path}",
+      path    => ['/bin', '/usr/bin', '/usr/sbin'],
+      require => File["rbenv::rbenvrc ${user}"],
+    }
   }
 
   file { "rbenv::cache-dir ${user}":
