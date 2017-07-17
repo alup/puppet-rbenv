@@ -4,11 +4,12 @@
 define rbenv::gem(
   $user,
   $ruby,
-  $gem    = $title,
-  $home   = '',
-  $root   = '',
-  $source = '',
-  $ensure = present
+  $gem     = $title,
+  $home    = '',
+  $root    = '',
+  $source  = '',
+  $ensure  = present,
+  $timeout = undef,
 ) {
 
   # Workaround http://projects.puppetlabs.com/issues/9848
@@ -26,6 +27,7 @@ define rbenv::gem(
     ruby    => $ruby,
     rbenv   => "${root_path}/versions/${ruby}",
     source  => $source,
+    timeout => $timeout,
     require => Exec["rbenv::compile ${user} ${ruby}"],
   }
 }
