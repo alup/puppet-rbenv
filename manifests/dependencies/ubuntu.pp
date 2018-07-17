@@ -4,8 +4,9 @@ class rbenv::dependencies::ubuntu {
   if ! defined(Package['bison'])            { package { 'bison':            ensure => installed } }
   if ! defined(Package['openssl'])          { package { 'openssl':          ensure => installed } }
   if  versioncmp($::operatingsystemrelease, '18.04') >= 0 {
-    if ! defined(Package['libreadline7'])     { package { 'libreadline7':     ensure => installed } }
-    if ! defined(Package['libreadline-dev']) { package { 'libreadline-dev': ensure => installed } }
+    if ! defined(Package['libreadline7'])     { package { 'libreadline7':    ensure => installed } }
+    if ! defined(Package['libreadline-dev'])  { package { 'libreadline-dev': ensure => installed } }
+    if ! defined(Package['libssl1.0-dev'])    { package { 'libssl1.0-dev':   ensure => installed } }
   } elsif (versioncmp($::operatingsystemrelease, '14.04') >= 0) {
     if ! defined(Package['libreadline6'])     { package { 'libreadline6':     ensure => installed } }
     if ! defined(Package['libreadline6-dev']) { package { 'libreadline6-dev': ensure => installed } }
