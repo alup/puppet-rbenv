@@ -9,8 +9,8 @@ class rbenv::dependencies::ubuntu {
       if ! defined(Package['libreadline5-dev']) { package { 'libreadline5-dev': ensure => installed } }
     }
     bionic: {
-      if ! defined(Package['libreadline5'])     { package { 'libreadline7':     ensure => installed } }
-      if ! defined(Package['libreadline5-dev']) { package { 'libreadline7-dev': ensure => installed } }
+      if ! defined(Package['libreadline7'])     { package { 'libreadline7':     ensure => installed } }
+      if ! defined(Package['libreadline7-dev']) { package { 'libreadline7-dev': ensure => installed } }
     }
     default : {
       if ! defined(Package['libreadline6'])     { package { 'libreadline6':     ensure => installed } }
