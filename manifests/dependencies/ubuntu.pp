@@ -8,9 +8,17 @@ class rbenv::dependencies::ubuntu {
       if ! defined(Package['libreadline5'])     { package { 'libreadline5':     ensure => installed } }
       if ! defined(Package['libreadline5-dev']) { package { 'libreadline5-dev': ensure => installed } }
     }
-    default : {
+    xenial: {
       if ! defined(Package['libreadline6'])     { package { 'libreadline6':     ensure => installed } }
       if ! defined(Package['libreadline6-dev']) { package { 'libreadline6-dev': ensure => installed } }
+    }
+    bionic: {
+      if ! defined(Package['libreadline7'])     { package { 'libreadline7':     ensure => installed } }
+      if ! defined(Package['libreadline-dev']) { package { 'libreadline-dev': ensure => installed } }
+    }
+    default : {
+      if ! defined(Package['libreadline7'])     { package { 'libreadline7':     ensure => installed } }
+      if ! defined(Package['libreadline-dev']) { package { 'libreadline-dev': ensure => installed } }
     }
   }
   if ! defined(Package['zlib1g'])           { package { 'zlib1g':           ensure => installed } }
