@@ -3,15 +3,16 @@ class rbenv::dependencies::ubuntu {
   if ! defined(Package['libc6-dev'])        { package { 'libc6-dev':        ensure => installed } }
   if ! defined(Package['bison'])            { package { 'bison':            ensure => installed } }
   if ! defined(Package['openssl'])          { package { 'openssl':          ensure => installed } }
-  case $::lsbdistcodename {
-    lenny: {
-      if ! defined(Package['libreadline5'])     { package { 'libreadline5':     ensure => installed } }
-      if ! defined(Package['libreadline5-dev']) { package { 'libreadline5-dev': ensure => installed } }
-    }
-    default : {
-      if ! defined(Package['libreadline6'])     { package { 'libreadline6':     ensure => installed } }
-      if ! defined(Package['libreadline6-dev']) { package { 'libreadline6-dev': ensure => installed } }
-    }
+  if  versioncmp($::operatingsystemrelease, '18.04') >= 0 {
+    if ! defined(Package['libreadline7'])     { package { 'libreadline7':    ensure => installed } }
+    if ! defined(Package['libreadline-dev'])  { package { 'libreadline-dev': ensure => installed } }
+    if ! defined(Package['libssl1.0-dev'])    { package { 'libssl1.0-dev':   ensure => installed } }
+  } elsif (versioncmp($::operatingsystemrelease, '14.04') >= 0) {
+    if ! defined(Package['libreadline6'])     { package { 'libreadline6':     ensure => installed } }
+    if ! defined(Package['libreadline6-dev']) { package { 'libreadline6-dev': ensure => installed } }
+  } else {
+    if ! defined(Package['libreadline5'])     { package { 'libreadline5':     ensure => installed } }
+    if ! defined(Package['libreadline5-dev']) { package { 'libreadline5-dev': ensure => installed } }
   }
   if ! defined(Package['zlib1g'])           { package { 'zlib1g':           ensure => installed } }
   if ! defined(Package['zlib1g-dev'])       { package { 'zlib1g-dev':       ensure => installed } }
