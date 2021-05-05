@@ -46,7 +46,7 @@ define rbenv::plugin(
     timeout => $timeout,
     cwd     => $destination,
     require => Exec["rbenv::plugin::checkout ${user} ${plugin_name}"],
-    onlyif  => 'git remote update; if [ "$(git rev-parse @{0})" = "$(git rev-parse @{u})" ]; then return 0; else return 1; fi ]',
+    onlyif  => 'git remote update; [ "$(git rev-parse @{0})" = "$(git rev-parse @{u})" ]',
   }
 
 }
