@@ -2,7 +2,7 @@ Puppet::Type.type(:rbenvgem).provide :default do
   desc "Maintains gems inside an RBenv setup"
 
   def install
-    args = ['install', '--no-rdoc', '--no-ri']
+    args = ['install', '--no-document']
     args << "-v#{resource[:ensure]}" if !resource[:ensure].kind_of?(Symbol)
     args << [ '--source', "'#{resource[:source]}'" ] if resource[:source] != ''
     args << gem_name
