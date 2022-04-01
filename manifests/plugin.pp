@@ -39,14 +39,15 @@ define rbenv::plugin(
   }
 
   exec { "rbenv::plugin::update ${user} ${plugin_name}":
-    command => 'git pull',
-    user    => $user,
-    group   => $group,
-    path    => ['/bin', '/usr/bin', '/usr/sbin'],
-    timeout => $timeout,
-    cwd     => $destination,
-    require => Exec["rbenv::plugin::checkout ${user} ${plugin_name}"],
-    onlyif  => 'git remote update; [ "$(git rev-parse @{0})" = "$(git rev-parse @{u})" ]',
+    command     => 'git pull',
+    user        => $user,
+    group       => $group,
+    path        => ['/bin', '/usr/bin', '/usr/sbin'],
+    timeout     => $timeout,
+    cwd         => $destination,
+    environment => "HOME=${home_path}",
+    require     => Exec["rbenv::plugin::checkout ${user} ${plugin_name}"],
+    onlyif      => 'git remote update; [ "$(git rev-parse @{0})" = "$(git rev-parse @{u})" ]',
   }
 
 }
