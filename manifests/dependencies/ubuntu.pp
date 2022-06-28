@@ -15,7 +15,11 @@ class rbenv::dependencies::ubuntu {
     focal: {
       if ! defined(Package['libreadline8'])     { package { 'libreadline8':     ensure => installed } }
       if ! defined(Package['libreadline-dev'])  { package { 'libreadline-dev':  ensure => installed } }
-    }    
+    }
+    jammy: {
+      if ! defined(Package['libreadline8'])     { package { 'libreadline8':     ensure => installed } }
+      if ! defined(Package['libreadline-dev'])  { package { 'libreadline-dev':  ensure => installed } }
+    }
     default : {
       if ! defined(Package['libreadline6'])     { package { 'libreadline6':     ensure => installed } }
       if ! defined(Package['libreadline6-dev']) { package { 'libreadline6-dev': ensure => installed } }
